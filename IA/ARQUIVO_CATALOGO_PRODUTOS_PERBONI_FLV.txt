@@ -1,0 +1,78 @@
+ARQUIVO: CATALOGO_PRODUTOS_PERBONI_FLV
+
+DESCRIÇÃO:
+Lista institucional de produtos trabalhados pela Perboni FLV.
+A disponibilidade pode variar conforme safra, importação e estoque.
+Este documento não garante disponibilidade imediata.
+
+────────────────────────
+
+CATEGORIA: FRUTAS NACIONAIS
+
+- Maçã Gala
+- Maçã Fuji
+- Banana Nanica
+- Banana Prata
+- Mamão Formosa
+- Mamão Papaya
+- Manga Palmer
+- Manga Tommy
+- Abacaxi Pérola
+- Melão Amarelo
+- Melancia
+- Laranja Pera
+- Laranja Bahia
+- Limão Tahiti
+- Goiaba
+- Abacate
+- Caqui
+- Pêssego (sazonal)
+- Ameixa Nacional (sazonal)
+
+────────────────────────
+
+CATEGORIA: FRUTAS IMPORTADAS
+
+- Uva Thompson
+- Uva Red Globe
+- Uva Crimson
+- Kiwi Importado
+- Pera Importada
+- Maçã Importada
+- Ameixa Importada
+- Nectarina
+- Pêssego Importado
+- Cereja (sazonal)
+- Blueberry (sazonal)
+
+Observação:
+Produtos importados dependem de janela de importação.
+
+────────────────────────
+
+CATEGORIA: FRUTAS SECAS
+
+- Damasco
+- Nozes
+- Castanha de Caju
+- Castanha do Pará
+- Uva Passa
+- Amêndoas
+
+────────────────────────
+
+CATEGORIA: LINHA ESPECIAL / SOB CONSULTA
+
+- Frutas fora de padrão comum
+- Produtos específicos por solicitação
+- Itens sazonais não listados
+
+────────────────────────
+
+OBSERVAÇÃO GERAL OBRIGATÓRIA:
+
+• A venda no atacado é realizada em caixa fechada.
+• Pode existir meia caixa padrão.
+• Não há venda fracionada.
+• A disponibilidade varia conforme safra e estoque.
+• Para cotação atualizada é necessário informar produto, quantidade e cidade.

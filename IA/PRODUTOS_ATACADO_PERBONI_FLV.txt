@@ -1,0 +1,75 @@
+PRODUTOS ATACADO – PERBONI FLV
+
+=== FRUTAS NACIONAIS ===
+
+PRODUTO: Maçã Gala
+ORIGEM: Nacional
+EMBALAGEM: Caixa fechada
+PESO MÉDIO: 18kg
+
+PRODUTO: Maçã Fuji
+ORIGEM: Nacional
+EMBALAGEM: Caixa fechada
+PESO MÉDIO: 18kg
+
+PRODUTO: Manga Haden
+ORIGEM: Nacional
+EMBALAGEM: Caixa fechada
+PESO MÉDIO: 4kg
+
+PRODUTO: Melão
+ORIGEM: Nacional
+EMBALAGEM: Caixa fechada
+PESO MÉDIO: Variável por calibre
+
+PRODUTO: Pêssego Nacional
+ORIGEM: Nacional
+EMBALAGEM: Caixa fechada
+PESO MÉDIO: Variável
+
+=== FRUTAS IMPORTADAS ===
+
+PRODUTO: Pera Importada
+ORIGEM: Importada
+EMBALAGEM: Caixa fechada
+PESO MÉDIO: 18kg
+
+PRODUTO: Kiwi Golden
+ORIGEM: Importado
+EMBALAGEM: Caixa fechada
+PESO MÉDIO: 3kg
+
+PRODUTO: Uva Importada
+ORIGEM: Importada
+EMBALAGEM: Caixa fechada
+PESO MÉDIO: 8,2kg
+
+PRODUTO: Romã Importada
+ORIGEM: Importada
+EMBALAGEM: Caixa fechada
+PESO MÉDIO: Variável
+
+=== FRUTAS SECAS ===
+
+PRODUTO: Castanha de Caju
+EMBALAGEM: Pacote
+PESO MÉDIO: 100g / 200g
+
+PRODUTO: Castanha do Pará
+EMBALAGEM: Pacote
+PESO MÉDIO: 100g / 200g
+
+PRODUTO: Pistache
+EMBALAGEM: Pacote
+PESO MÉDIO: Variável
+
+PRODUTO: Tâmara
+EMBALAGEM: Caixa
+PESO MÉDIO: 1kg
+
+=== OBSERVAÇÕES ===
+
+• Portfólio sazonal.
+• Disponibilidade depende de safra.
+• Venda exclusivamente em caixa fechada.
+• Não há fracionamento.
