@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perboni FLV – Comparativo de Layouts de Unidade</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f0;
+      padding: 40px 20px;
+      color: #2A4A18;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header h1 { font-size: 22px; font-weight: bold; margin-bottom: 8px; }
+    header p { font-size: 13px; color: #666; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      padding: 28px 20px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card img {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+    }
+    .card .titulo {
+      margin-top: 14px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #2A4A18;
+      letter-spacing: 1px;
+    }
+    .card .desc {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .card .pros {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #52B83A;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Perboni FLV – Comparativo de Layouts por Unidade</h1>
+    <p>Todas as opções usam "Palmas" como exemplo. Escolha a que melhor representa a identidade da rede.</p>
+  </header>
+
+  <div class="grid">
+
+    <div class="card">
+      <img src="opcao-A-badge-flv-unidade.svg" alt="Opção A"/>
+      <div class="titulo">Opção A — Badge unificado</div>
+      <div class="desc">O nome da unidade entra no mesmo badge verde do "flv", separado por uma barra.</div>
+      <div class="pros">+ Compacto · + Integrado à marca</div>
+    </div>
+
+    <div class="card">
+      <img src="opcao-B-dois-badges.svg" alt="Opção B"/>
+      <div class="titulo">Opção B — Dois badges</div>
+      <div class="desc">Badge "flv" original + segundo badge menor verde escuro com o nome da unidade abaixo.</div>
+      <div class="pros">+ Hierarquia clara · + Fácil de adaptar</div>
+    </div>
+
+    <div class="card">
+      <img src="opcao-C-faixa-rodape.svg" alt="Opção C"/>
+      <div class="titulo">Opção C — Faixa rodapé</div>
+      <div class="desc">Faixa retangular verde escuro com o nome em branco abaixo de toda a composição.</div>
+      <div class="pros">+ Impacto visual · + Ótimo para fachada e impressão</div>
+    </div>
+
+    <div class="card">
+      <img src="opcao-D-nome-ao-lado.svg" alt="Opção D"/>
+      <div class="titulo">Opção D — Nome ao lado</div>
+      <div class="desc">O nome da unidade fica ao lado de "Perboni", separado por barra vertical, com "Unidade" em verde.</div>
+      <div class="pros">+ Horizontal · + Destaque equilibrado</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
