@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 580" width="400" height="580">
+  <defs>
+    <!-- Sphere gradient layers -->
+    <radialGradient id="sphereGrad" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#F07820"/>
+      <stop offset="60%" stop-color="#D42010"/>
+      <stop offset="100%" stop-color="#8B1010"/>
+    </radialGradient>
+    <radialGradient id="greenPetal" cx="30%" cy="70%" r="70%">
+      <stop offset="0%" stop-color="#6CC830"/>
+      <stop offset="100%" stop-color="#2A8010"/>
+    </radialGradient>
+    <clipPath id="circleClip">
+      <circle cx="200" cy="155" r="140"/>
+    </clipPath>
+  </defs>
+
+  <!-- White background -->
+  <rect width="400" height="580" fill="white"/>
+
+  <!-- === MARCA / SÍMBOLO === -->
+  <!-- Base sphere -->
+  <circle cx="200" cy="155" r="140" fill="url(#sphereGrad)"/>
+
+  <!-- Green bottom-left petal -->
+  <ellipse cx="130" cy="220" rx="120" ry="95" fill="url(#greenPetal)" clip-path="url(#circleClip)" opacity="0.92"/>
+
+  <!-- Orange-yellow center petal -->
+  <ellipse cx="200" cy="140" rx="100" ry="130" fill="#F0A020" clip-path="url(#circleClip)" opacity="0.55"/>
+
+  <!-- Red-orange right overlay -->
+  <ellipse cx="240" cy="120" rx="110" ry="100" fill="#E04010" clip-path="url(#circleClip)" opacity="0.45"/>
+
+  <!-- White leaf shape -->
+  <g clip-path="url(#circleClip)">
+    <path d="M195 70 C230 90, 280 130, 270 190 C260 240, 210 255, 185 240 C185 240, 165 165, 175 120 C180 95, 192 73, 195 70 Z" fill="white" opacity="0.95"/>
+    <path d="M195 70 C160 110, 155 165, 175 220 C175 220, 188 180, 195 70 Z" fill="white" opacity="0.6"/>
+    <!-- Leaf vein -->
+    <path d="M195 80 C195 80, 200 160, 215 220" stroke="#E04010" stroke-width="1.5" fill="none" opacity="0.4"/>
+  </g>
+
+  <!-- === TEXTO DA MARCA === -->
+  <!-- "Perboni" wordmark -->
+  <text x="200" y="365"
+        font-family="'Arial Rounded MT Bold', 'Nunito', Arial, sans-serif"
+        font-weight="900"
+        font-size="72"
+        fill="#2A4A18"
+        text-anchor="middle"
+        letter-spacing="-1">Perboni</text>
+
+  <!-- "Alimentando  Saúde" tagline -->
+  <text x="175" y="402"
+        font-family="Arial, sans-serif"
+        font-size="20"
+        fill="#2A4A18"
+        text-anchor="middle"
+        letter-spacing="1.5">Alimentando  Saúde</text>
+
+  <!-- FLV Badge -->
+  <rect x="286" y="381" width="62" height="28" rx="14" fill="#52B83A"/>
+  <text x="317" y="400"
+        font-family="Arial, sans-serif"
+        font-weight="bold"
+        font-size="15"
+        fill="white"
+        text-anchor="middle">flv</text>
+  <!-- FLV leaf decoration -->
+  <path d="M313 384 C313 384, 318 381, 323 384 C320 381, 323 378, 313 384 Z" fill="#7DD84A"/>
+
+  <!-- Separator line -->
+  <line x1="130" y1="424" x2="270" y2="424" stroke="#2A4A18" stroke-width="0.7" opacity="0.35"/>
+
+  <!-- === NOME DA UNIDADE === -->
+  <text x="200" y="450"
+        font-family="Arial, sans-serif"
+        font-weight="normal"
+        font-size="19"
+        fill="#2A4A18"
+        text-anchor="middle"
+        letter-spacing="4">PALMAS</text>
+</svg>
