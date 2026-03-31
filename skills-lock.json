@@ -10,6 +10,11 @@
       "source": "delphine-l/claude_global",
       "sourceType": "github",
       "computedHash": "afec41d65b02f01b1dab10a3f784ca6b37362847569b5a8fe7424f9decb9b068"
+    },
+    "token-optimization": {
+      "source": "claude-dev-suite/claude-dev-suite",
+      "sourceType": "github",
+      "computedHash": "3b56f346b1e93998dc06d0c0c2bf4c84e1c2d603e8a40527a249fda978a4f2b7"
     }
   }
 }
