@@ -15,6 +15,11 @@
       "source": "claude-dev-suite/claude-dev-suite",
       "sourceType": "github",
       "computedHash": "3b56f346b1e93998dc06d0c0c2bf4c84e1c2d603e8a40527a249fda978a4f2b7"
+    },
+    "verification-before-completion": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "computedHash": "9b446f0c7fe1cfb560b1d34439523b1a76d5f177290007b2c053a1c749a4a8ba"
     }
   }
 }
