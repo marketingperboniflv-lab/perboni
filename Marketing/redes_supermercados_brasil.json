@@ -1,0 +1,774 @@
+[
+  {
+    "empresa": "Carrefour Comércio e Indústria Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Assaí Atacadista",
+    "estado": "SP"
+  },
+  {
+    "empresa": "GPA",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Grupo Pereira",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Cencosud Brasil Comercial Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Plurix",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Tenda Atacado S.A.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Savegnago Supermercados Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Sonda Supermercados Exportação e Importação S.A.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Comercial Zaragoza Imp. Exp. Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Roldão Auto Serviço Comércio de Alimentos Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Pague Menos Com. de Prod. Alim. Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Tauste Supermercados Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Jad Zogheib e Cia. Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Dia Brasil Sociedade Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Coop Cooperativa de Consumo",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Silva e Barbosa Comércio de Alimentos Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "AM PM Comestíveis Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercados Cavicchiolli Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Covabra Supermercados Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercados Irmãos Lopes S.A.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Lopes Supermercados Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "D’Avó Supermercados Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Hortus Comércio de Alimentos Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Mercearia Chama Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercado São Roque Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Trimais Supermercados S.A.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Rede de Distribuição Zeferino Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Higa Produtos Alimentícios Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercado Porecatu Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Andorinha Supermercado Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercado Iquegami Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercado Tibúrcio de Souza Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Comercial Oswaldo Cruz Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercado Delta Max Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Comercial Villa Simpatia Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Cofesa Comercial Ferreira Santos Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Mix Vali Comércio de Produtos Alimentícios Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Rede Plus Supermercados Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercados Gricki Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Fonseca Supermercados Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercados Mialich Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Serrano Auto Serviço Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Comercial Sakashita de Supermercados Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercado Veran Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercado Big Compra Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "A. A. de Melo & Cia Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercado e Restaurante JVA Eireli",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Jose Carlos Nori & Cia Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Dias Pastorinho S.A. Comércio e Indústria",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercado Estrela de Regente Feijó Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Cooperativa de Consumo Popular de Cerquilho",
+    "estado": "SP"
+  },
+  {
+    "empresa": "S.S. Comércio de Alimentos Ltda.",
+    "estado": "SP"
+  },
+  {
+    "empresa": "Supermercados BH Comércio de Alimentos S.A.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Mart Minas Atacado e Varejo & Dom Atacadista",
+    "estado": "MG"
+  },
+  {
+    "empresa": "DMA Distribuidora S.A.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Grupo ABC",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Grupo Supernosso",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Supermercado Bahamas S.A.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Cema Central Mineira Atacadista Ltda. (Villefort)",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Organizações Verdemar Ltda.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Supermercado Super Luna S.A.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Luiz Tonin Atacadista e Supermercado S.A.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "M.N Supermercados Ltda.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Maglioni Ribeiro e Cia. Ltda.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Supermercado Bernardão Ltda.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Casa Rena S.A.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Big Mais Supermercado Ltda.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Supermercado Eskynão Ltda.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Meu Prata Supermercados Ltda.",
+    "estado": "MG"
+  },
+  {
+    "empresa": "Irmãos Muffato S.A.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Cia. Beal de Alimentos",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Supermercado Jacomar Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Batista & Izepe Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "GCA - Distribuidora Comercial de Alimentos Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Sanches & Vecchiate Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Supermercados Bavaresco Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Grupo Irani Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Agricer Distribuidora e Comercial de Prod. Alim. Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Comercial de Secos e Molhados Dal Pozzo Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "J. Martins Supermercado Planalto Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Allmayer Supermercado Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Mig Atacado e Varejo Ltda.",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Lar Cooperativa Agroindustrial",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Casa Viscardi S.A. Comércio Importação",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Copacol Cooperativa Agroindustrial Consolata",
+    "estado": "PR"
+  },
+  {
+    "empresa": "C.Vale Cooperativa Agroindustrial",
+    "estado": "PR"
+  },
+  {
+    "empresa": "Companhia Zaffari Comércio e Indústria",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Comercial Zaffari Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Unidasul Distribuidora Alimentícia S.A.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Importadora e Exportadora de Cereais S.A.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Asun Comércio de Gêneros Alimentícios Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Master ATS Supermercado Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Peruzzo Supermercado Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Libraga Brandão & Cia Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Supermercado Guanabara S.A.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Osmar Nicolini Comércio e Distribuição S.A.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Righi Comércio de Gêneros Alimentícios Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Supermercado Baklizi Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Cotripal Agropecuária Cooperativa",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Formenton S.A.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Treichel Macromercado Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Macamo Alimentos - Eireli",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Max Center Centro de Compras Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Cooperativa Triticola Sarandi Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Cooperativa Triticola Santa Rosa Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Benedetti e Benedetti Ltda.",
+    "estado": "RS"
+  },
+  {
+    "empresa": "Grupo JC/Costa Atacadão",
+    "estado": "GO"
+  },
+  {
+    "empresa": "Comercial Reis Ltda.",
+    "estado": "GO"
+  },
+  {
+    "empresa": "Supervi Distribuidor de Alimentos Ltda.",
+    "estado": "GO"
+  },
+  {
+    "empresa": "Supermercado Pro Brasil Ltda.",
+    "estado": "GO"
+  },
+  {
+    "empresa": "G.S. Comércio de Produtos Alimentícios Ltda.",
+    "estado": "GO"
+  },
+  {
+    "empresa": "Koch Hipermercado S.A.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Giassi e Cia Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Angeloni",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Mundialmix Comércio de Alimentos Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Passarela Center Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Gtop Distribuição Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Supermercado Archer S.A.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Superviza Supermercados Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Supermercado Carol Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Comercial Celeiro Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Hiper Select Supermercados Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Althoff Supermercados Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Supermercado Manentti Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Unibox Dinardelli Comércio e Distribuição Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Brasao Supermercado S.A.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Irmãos Zat Ltda.",
+    "estado": "SC"
+  },
+  {
+    "empresa": "Torre e Cia. Supermercados S.A.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Supermercados Alvorada Ltda.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Costazul Alimentos",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Naomi Comércio Alimentos Ltda.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Supermercado Vianense Ltda.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Supermercado Pepão Ltda.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Germans Distribuidora Comestíveis Ltda.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Atlas de Iguaçú Distribuidora de Alimentos Ltda.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Pax Supermercados Ltda.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Armazém do Grão Ltda.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Supermercado Real de Niterói Ltda.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Floresta Comércio e Indústria S.A.",
+    "estado": "RJ"
+  },
+  {
+    "empresa": "Atacadão Dia a Dia S.A.",
+    "estado": "DF"
+  },
+  {
+    "empresa": "Centro Oeste Comercial de Alimentos Ltda.",
+    "estado": "DF"
+  },
+  {
+    "empresa": "São Cristovão Investimentos e Participações S.A.",
+    "estado": "DF"
+  },
+  {
+    "empresa": "Comercial Alim. Ita Ltda.",
+    "estado": "DF"
+  },
+  {
+    "empresa": "Comercial de Alimentos Superbom Ltda.",
+    "estado": "DF"
+  },
+  {
+    "empresa": "E de Casa Supermercado",
+    "estado": "DF"
+  },
+  {
+    "empresa": "Atakarejo Distribuidor de Alimentos e Bebidas S.A.",
+    "estado": "BA"
+  },
+  {
+    "empresa": "Rmix Comércio de Gêneros Alimentícios Ltda.",
+    "estado": "BA"
+  },
+  {
+    "empresa": "Hiperideal Empreendimentos Ltda.",
+    "estado": "BA"
+  },
+  {
+    "empresa": "Comercial de Alimentos Gilmar Ltda.",
+    "estado": "BA"
+  },
+  {
+    "empresa": "R.F Atacado de Alimentos S.A.",
+    "estado": "BA"
+  },
+  {
+    "empresa": "Novo Mix Atacado de Alimentos Ltda.",
+    "estado": "BA"
+  },
+  {
+    "empresa": "Distribuidora de Alimentos Fartura S.A.",
+    "estado": "CE"
+  },
+  {
+    "empresa": "Supermercado Cometa Ltda.",
+    "estado": "CE"
+  },
+  {
+    "empresa": "Âncora Distribuidora de Alimentos Ltda.",
+    "estado": "CE"
+  },
+  {
+    "empresa": "Bom Vizinho Distribuidora de Alimentos Ltda.",
+    "estado": "CE"
+  },
+  {
+    "empresa": "Centerbox Supermercados Ltda.",
+    "estado": "CE"
+  },
+  {
+    "empresa": "MWN Comercial de Alim. Ltda.",
+    "estado": "CE"
+  },
+  {
+    "empresa": "Diniz Supermercados Ltda.",
+    "estado": "CE"
+  },
+  {
+    "empresa": "Supermercado Moranguinho Ltda.",
+    "estado": "CE"
+  },
+  {
+    "empresa": "Supermercado Nordestão Ltda.",
+    "estado": "RN"
+  },
+  {
+    "empresa": "Supermercado Queiroz Ltda.",
+    "estado": "RN"
+  },
+  {
+    "empresa": "Nosso Atacarejo Comércio de Gêneros Alimentícios Ltda.",
+    "estado": "RN"
+  },
+  {
+    "empresa": "Comercial Praias Belas Ltda.",
+    "estado": "RN"
+  },
+  {
+    "empresa": "J.L. de Medeiros & Araújo Ltda.",
+    "estado": "RN"
+  },
+  {
+    "empresa": "Lider Comércio e Indústria Ltda.",
+    "estado": "PA"
+  },
+  {
+    "empresa": "Formosa Supermercados & Magazine Ltda.",
+    "estado": "PA"
+  },
+  {
+    "empresa": "Grupo Preço Baixo Ltda.",
+    "estado": "PA"
+  },
+  {
+    "empresa": "Economico Comércio de Alimentos Ltda.",
+    "estado": "PA"
+  },
+  {
+    "empresa": "Rede Supermercado Mais Barato Ltda.",
+    "estado": "PA"
+  },
+  {
+    "empresa": "Casa Santa Ltda.",
+    "estado": "PA"
+  },
+  {
+    "empresa": "RMC Comércio de Alimentos Ltda.",
+    "estado": "PI"
+  },
+  {
+    "empresa": "Distribuição de Alimentos Vanguarda S.A.",
+    "estado": "PI"
+  },
+  {
+    "empresa": "FM Ferreira de Sousa Ltda.",
+    "estado": "PI"
+  },
+  {
+    "empresa": "Jorge Batista & Cia Ltda.",
+    "estado": "PI"
+  },
+  {
+    "empresa": "Gomes Paixão & Cia Ltda.",
+    "estado": "PB"
+  },
+  {
+    "empresa": "Farias Supermercados",
+    "estado": "PB"
+  },
+  {
+    "empresa": "Rede Menor Preço Supermercado Ltda.",
+    "estado": "PB"
+  },
+  {
+    "empresa": "ABV Com. de Alim. Ltda.",
+    "estado": "MS"
+  },
+  {
+    "empresa": "S Pires Comércio de Alimentos Ltda.",
+    "estado": "MS"
+  },
+  {
+    "empresa": "VRA Comércio Ltda.",
+    "estado": "MS"
+  },
+  {
+    "empresa": "Nova Estrela Comércio de Alimentos S.A.",
+    "estado": "MS"
+  },
+  {
+    "empresa": "Del Moro & Del Moro Ltda.",
+    "estado": "MT"
+  },
+  {
+    "empresa": "Juba Supermercado Ltda.",
+    "estado": "MT"
+  },
+  {
+    "empresa": "Realmar Distr Ltda.",
+    "estado": "ES"
+  },
+  {
+    "empresa": "Locatelli Supermercados e Serviços Ltda.",
+    "estado": "ES"
+  },
+  {
+    "empresa": "A.C.D.A Importação e Exportação Ltda.",
+    "estado": "AC"
+  },
+  {
+    "empresa": "L & G Alimentos do Brasil Ltda.",
+    "estado": "AC"
+  },
+  {
+    "empresa": "Unicompra Supermercados Ltda.",
+    "estado": "AL"
+  },
+  {
+    "empresa": "Leite & Paranhos Ltda.",
+    "estado": "AL"
+  },
+  {
+    "empresa": "M.A. Silva e Silva Ltda.",
+    "estado": "AP"
+  },
+  {
+    "empresa": "A.R. Filho & Cia Ltda.",
+    "estado": "AP"
+  },
+  {
+    "empresa": "Quartetto Supermercados Ltda.",
+    "estado": "TO"
+  }
+]
