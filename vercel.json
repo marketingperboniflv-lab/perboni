@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/Influencers/remixed-0a58f3f8.html" },
+    { "source": "/influencers", "destination": "/Influencers/remixed-0a58f3f8.html" }
+  ]
+}
