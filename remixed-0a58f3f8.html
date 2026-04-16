@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Influenciadores Perboni</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root{--verde:#1DB954;--laranja:#FF6B2B;--escuro:#111;--medio:#1E1E1E;--claro:#2A2A2A;--texto:#888;--branco:#F5F5F5}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--escuro);color:var(--branco);font-family:'DM Sans',sans-serif;min-height:100vh;padding:28px 16px 60px}
+  header{text-align:center;margin-bottom:28px}
+  h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,6vw,64px);letter-spacing:3px;line-height:1}
+  h1 span{color:var(--laranja)}
+  .subtitle{color:var(--texto);font-size:13px;margin-top:8px}
+
+  .stats-bar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+  .stat{background:var(--medio);border:1px solid var(--claro);border-radius:10px;padding:12px 20px;text-align:center;min-width:110px}
+  .stat-num{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--laranja);line-height:1}
+  .stat-label{font-size:10px;color:var(--texto);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+
+  .filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;padding:14px 16px;background:var(--medio);border:1px solid var(--claro);border-radius:10px}
+  .filter-bar label{font-size:11px;color:var(--texto);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+  .fg{display:flex;align-items:center;gap:6px}
+  .fi{background:#111;border:1.5px solid #333;border-radius:6px;color:var(--branco);font-family:'DM Sans',sans-serif;font-size:12px;padding:5px 8px;outline:none;transition:border-color .2s}
+  .fi:focus{border-color:var(--laranja)}
+  select.fi{appearance:none;cursor:pointer;padding-right:20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center}
+  .btn-cf{background:none;border:1px solid #444;border-radius:6px;color:var(--texto);font-size:11px;padding:5px 10px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+  .btn-cf:hover{border-color:var(--laranja);color:var(--laranja)}
+  .fcount{font-size:11px;color:var(--texto)}
+  .fcount span{color:var(--laranja);font-weight:600}
+
+  .toolbar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:opacity .2s;white-space:nowrap}
+  .btn-add{background:var(--laranja);color:#fff}
+  .btn-save{background:var(--verde);color:#fff}
+  .btn-csv{background:#2a2a2a;color:#ccc;border:1px solid #444}
+  .btn:hover{opacity:.82}
+  .smsg{font-size:12px;margin-left:4px}
+  .smsg-ok{color:var(--verde)}
+  .smsg-err{color:#f87171}
+  .smsg-ing{color:#fbbf24}
+
+  .table-wrapper{overflow-x:auto;border-radius:12px;border:1px solid var(--claro)}
+  table{width:100%;border-collapse:collapse;min-width:1200px}
+  thead tr{background:var(--claro)}
+  th{padding:11px 13px;text-align:left;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--texto);border-bottom:1px solid #333;white-space:nowrap}
+  th.sort{cursor:pointer;user-select:none}
+  th.sort:hover{color:var(--branco)}
+  .si{margin-left:4px;font-size:9px;color:#555}
+  th.sa .si::after{content:'▲';color:var(--laranja)}
+  th.sd .si::after{content:'▼';color:var(--laranja)}
+  th:not(.sa):not(.sd) .si::after{content:'⇅'}
+  tbody tr{border-bottom:1px solid #222;transition:background .15s}
+  tbody tr:hover{background:#1a1a1a}
+  tbody tr:last-child{border-bottom:none}
+  tbody tr.hidden{display:none}
+  td{padding:10px 13px;font-size:13px;vertical-align:middle}
+  .num{color:var(--texto);font-size:12px;font-weight:600;width:30px}
+
+  .campo{background:#1a1a1a;border:1.5px solid #333;border-radius:6px;color:var(--branco);font-family:'DM Sans',sans-serif;font-size:13px;padding:6px 9px;width:100%;outline:none;transition:border-color .2s}
+  .campo:focus{border-color:var(--laranja)}
+  .campo.ok{border-color:var(--verde)}
+  select.campo{appearance:none;cursor:pointer;padding-right:22px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center}
+
+  .calc{font-size:13px;font-weight:700}
+  .calc-a{color:#4ade80}
+  .calc-m{color:#fbbf24}
+  .calc-b{color:#f87171}
+  .calc-v{color:var(--texto);font-size:11px;font-weight:400}
+
+  .stars{display:flex;gap:2px;font-size:20px;cursor:pointer}
+  .star{color:#333;transition:color .12s;user-select:none}
+  .star.on{color:#fbbf24}
+
+  .campo-fb{min-width:140px;min-height:34px;resize:vertical}
+  .btn-del{background:none;border:none;color:#555;cursor:pointer;font-size:15px;padding:2px 5px;border-radius:4px;transition:color .2s}
+  .btn-del:hover{color:#f87171}
+
+  .total-bar{background:linear-gradient(135deg,var(--medio),#252525);border:1px solid var(--claro);border-radius:10px;padding:18px 24px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+  .total-bar .lbl{font-size:11px;color:var(--texto);text-transform:uppercase;letter-spacing:1px}
+  .total-bar .val{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--laranja);line-height:1}
+  .total-bar .sub{font-size:11px;color:var(--texto);margin-top:2px}
+
+  .footer-note{text-align:center;margin-top:20px;color:var(--texto);font-size:12px;line-height:2}
+  .footer-note strong{color:var(--branco)}
+
+  #loading{position:fixed;inset:0;background:rgba(17,17,17,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:999;font-size:15px;color:var(--branco)}
+  .spinner{width:34px;height:34px;border:3px solid #333;border-top-color:var(--laranja);border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div id="loading"><div class="spinner"></div><span>Carregando dados salvos…</span></div>
+
+<header>
+  <h1>INFLUENCIADORES <span>PERBONI</span></h1>
+  <p class="subtitle">Painel de Parcerias — Food Run 2026</p>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num" id="st-total">—</div><div class="stat-label">Parceiros</div></div>
+  <div class="stat"><div class="stat-num" id="st-conf">—</div><div class="stat-label">Confirmados</div></div>
+  <div class="stat"><div class="stat-num" id="st-pend">—</div><div class="stat-label">Pendentes</div></div>
+  <div class="stat"><div class="stat-num" id="st-alcance">—</div><div class="stat-label">Alcance total</div></div>
+</div>
+
+<!-- FILTROS -->
+<div class="filter-bar">
+  <div class="fg"><label>Busca</label><input class="fi" id="f-busca" type="text" placeholder="Nome ou @handle…" oninput="applyFilters()" style="min-width:130px"></div>
+  <div class="fg"><label>Nicho</label><select class="fi" id="f-nicho" onchange="applyFilters()"><option value="">Todos</option></select></div>
+  <div class="fg"><label>Status</label>
+    <select class="fi" id="f-status" onchange="applyFilters()">
+      <option value="">Todos</option><option>Confirmado</option><option>Pendente</option><option>Negociando</option><option>Declinado</option>
+    </select>
+  </div>
+  <div class="fg"><label>Seg. mín.</label><input class="fi" id="f-seg-min" type="text" placeholder="ex: 100000" oninput="applyFilters()" style="width:96px"></div>
+  <div class="fg"><label>Avaliação ≥</label>
+    <select class="fi" id="f-stars" onchange="applyFilters()">
+      <option value="0">Todas</option><option value="1">★ 1+</option><option value="2">★★ 2+</option><option value="3">★★★ 3+</option><option value="4">★★★★ 4+</option><option value="5">★★★★★ 5</option>
+    </select>
+  </div>
+  <button class="btn-cf" onclick="clearFilters()">✕ Limpar</button>
+  <span class="fcount" id="fcount"></span>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="btn btn-add" onclick="addRow()">＋ Influenciador</button>
+  <button class="btn btn-save" onclick="saveNow()">💾 Salvar agora</button>
+  <button class="btn btn-csv" onclick="exportCSV()">⬇ Exportar CSV</button>
+  <span id="smsg" class="smsg"></span>
+</div>
+
+<div class="table-wrapper">
+<table>
+  <thead><tr>
+    <th>#</th>
+    <th>Nome</th>
+    <th>@Handle</th>
+    <th>Nicho</th>
+    <th class="sort" data-col="seg" onclick="sortBy('seg')">Seg. Instagram<span class="si"></span></th>
+    <th class="sort" data-col="eng" onclick="sortBy('eng')">Eng. Médio<span class="si"></span></th>
+    <th class="sort" data-col="engpct" onclick="sortBy('engpct')">% Eng.<span class="si"></span></th>
+    <th class="sort" data-col="viz" onclick="sortBy('viz')">Viz. média/Reel<span class="si"></span></th>
+    <th class="sort" data-col="vizpct" onclick="sortBy('vizpct')">Viz. ÷ Seg.<span class="si"></span></th>
+    <th>Localização</th>
+    <th>Status</th>
+    <th class="sort" data-col="stars" onclick="sortBy('stars')">⭐ Cesta<span class="si"></span></th>
+    <th>Feedback cesta</th>
+    <th></th>
+  </tr></thead>
+  <tbody id="tbody"></tbody>
+</table>
+</div>
+
+<div class="total-bar">
+  <div><div class="lbl">Alcance confirmados</div><div class="val" id="alc-conf">—</div><div class="sub">Só confirmados</div></div>
+  <div><div class="lbl">Alcance total</div><div class="val" id="alc-total">—</div><div class="sub">Todos os parceiros</div></div>
+  <div><div class="lbl">Avaliação média cesta</div><div class="val" id="avg-stars">—</div><div class="sub">Estrelas preenchidas</div></div>
+</div>
+
+<div class="footer-note">
+  <strong>% Eng.</strong> = Eng. Médio ÷ Seg. × 100 &nbsp;|&nbsp;
+  <strong>Viz. ÷ Seg.</strong> = Viz. média ÷ Seg. × 100 &nbsp;|&nbsp;
+  Verde ≥ alto · Amarelo ≥ médio · Vermelho baixo<br>
+  <strong>💾 Use "Salvar agora" após cada sessão. Exporte CSV como backup.</strong>
+</div>
+
+<script>
+const KEY = 'perboni_foodrun_v3';
+
+const NICHOS = ['Corrida','Fitness / Corrida','Corrida (Pet)','Corrida / Lifestyle','Corrida / Bem-estar','Corrida / Esporte','Saúde Mental / Lifestyle','Humor / Gastronomia','Humor / Entretenimento','Humor / Portal Goiano','Gastronomia / Goiânia','Entretenimento / Casal','Vegano / Estilo de vida','Jornalismo / Esporte','Mídia / TV','Outro'];
+const STATUS = ['Pendente','Confirmado','Negociando','Declinado'];
+const SICON  = {Confirmado:'✓',Pendente:'⏳',Negociando:'🤝',Declinado:'✗'};
+
+const DEFAULTS = [
+  {nome:'Tuany',handle:'@turibeiro',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Clara Machado',handle:'@claramachadofit2',nicho:'Fitness / Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Reca Meneses',handle:'@recameneses',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Larissa Fabrine',handle:'@lahfabrine',nicho:'Corrida / Lifestyle',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Correndo Com Raika',handle:'@correndocomraika',nicho:'Corrida (Pet)',seg:'225000',eng:'',viz:'',loc:'Brasil',status:'Confirmado',stars:0,feedback:''},
+  {nome:'Cami Pires',handle:'@camipiresveg',nicho:'Vegano / Estilo de vida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Nathalia França',handle:'@nathyfrancaa',nicho:'Corrida / Bem-estar',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Los Porpetas',handle:'@losporpetas',nicho:'Humor / Gastronomia',seg:'307000',eng:'',viz:'',loc:'Brasil',status:'Confirmado',stars:0,feedback:''},
+  {nome:'Izabella Camargo',handle:'@camarguinha',nicho:'Saúde Mental / Lifestyle',seg:'1300000',eng:'',viz:'',loc:'São Paulo/SP',status:'Confirmado',stars:0,feedback:''},
+  {nome:'Jessica Soares',handle:'@_jessica.ssoares_',nicho:'Corrida / Esporte',seg:'104000',eng:'',viz:'',loc:'Brasil',status:'Confirmado',stars:0,feedback:''},
+  {nome:'Raniele Oliveira',handle:'@ranieleoli',nicho:'Corrida / Lifestyle',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Patrícia Pam & William',handle:'@patriciapamm',nicho:'Entretenimento / Casal',seg:'1000000',eng:'',viz:'',loc:'Goiânia/GO',status:'Confirmado',stars:0,feedback:''},
+  {nome:'Vandin',handle:'@enquantoissoemGoias',nicho:'Humor / Portal Goiano',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Lucas Peixoto',handle:'@falooquequero',nicho:'Humor / Entretenimento',seg:'2000000',eng:'',viz:'',loc:'Goiânia/GO',status:'Confirmado',stars:0,feedback:''},
+  {nome:'Gabriel',handle:'@ehgoiania',nicho:'Gastronomia / Goiânia',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Cláudio Silvério',handle:'@ctsilverio',nicho:'Jornalismo / Esporte',seg:'60000',eng:'',viz:'',loc:'Goiânia/GO',status:'Confirmado',stars:0,feedback:''},
+  {nome:'Diretor da Record',handle:'—',nicho:'Mídia / TV',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''}
+];
+
+let rows = [];
+let sortCol = null, sortDir = 1;
+let saveTimer = null;
+
+// ── Storage ──────────────────────────────────────────
+async function loadRows() {
+  try {
+    const res = await window.storage.get(KEY);
+    if (res && res.value) {
+      const p = JSON.parse(res.value);
+      if (Array.isArray(p) && p.length) return p;
+    }
+  } catch(e) {}
+  try {
+    const s = localStorage.getItem(KEY);
+    if (s) {
+      const p = JSON.parse(s);
+      if (Array.isArray(p) && p.length) return p;
+    }
+  } catch(e) {}
+  return DEFAULTS.map(r => ({...r}));
+}
+
+async function persist() {
+  const json = JSON.stringify(rows);
+  let ok = false;
+  try { const r = await window.storage.set(KEY, json); if(r) ok=true; } catch(e) {}
+  try { localStorage.setItem(KEY, json); ok=true; } catch(e) {}
+  return ok;
+}
+
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  setMsg('💾 Salvando…','smsg-ing');
+  saveTimer = setTimeout(async () => {
+    pullDOM();
+    const ok = await persist();
+    setMsg(ok ? '✓ Salvo automaticamente' : '⚠ Erro ao salvar', ok ? 'smsg-ok':'smsg-err');
+    setTimeout(()=>setMsg('',''), 3000);
+  }, 900);
+}
+
+async function saveNow() {
+  clearTimeout(saveTimer);
+  pullDOM();
+  setMsg('💾 Salvando…','smsg-ing');
+  const ok = await persist();
+  setMsg(ok ? '✓ Salvo!' : '⚠ Erro ao salvar', ok ? 'smsg-ok':'smsg-err');
+  setTimeout(()=>setMsg('',''), 3000);
+}
+
+function setMsg(txt, cls) {
+  const el = document.getElementById('smsg');
+  el.textContent = txt;
+  el.className = 'smsg ' + (cls||'');
+}
+
+// ── DOM → rows ───────────────────────────────────────
+function pullDOM() {
+  document.querySelectorAll('#tbody tr[data-idx]').forEach(tr => {
+    const i = +tr.dataset.idx;
+    if (!rows[i]) return;
+    rows[i].nome     = tr.querySelector('.f-nome')?.value    ?? '';
+    rows[i].handle   = tr.querySelector('.f-handle')?.value  ?? '';
+    rows[i].nicho    = tr.querySelector('.f-nicho')?.value   ?? '';
+    rows[i].seg      = tr.querySelector('.f-seg')?.value     ?? '';
+    rows[i].eng      = tr.querySelector('.f-eng')?.value     ?? '';
+    rows[i].viz      = tr.querySelector('.f-viz')?.value     ?? '';
+    rows[i].loc      = tr.querySelector('.f-loc')?.value     ?? '';
+    rows[i].status   = tr.querySelector('.f-status')?.value  ?? '';
+    rows[i].feedback = tr.querySelector('.f-fb')?.value      ?? '';
+  });
+}
+
+// ── Utils ────────────────────────────────────────────
+function pN(v) { return parseInt((v||'').replace(/\D/g,''))||0; }
+function fmt(n) {
+  if (!n) return '—';
+  if (n>=1e6) return (n/1e6).toFixed(1).replace('.0','')+'M';
+  if (n>=1000) return Math.round(n/1000)+'K';
+  return String(n);
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function calcHTML(num, den, hiGe, midGe) {
+  const n = pN(num), d = pN(den);
+  if (!n||!d) return '<span class="calc calc-v">—</span>';
+  const pct = (n/d)*100;
+  const cls = pct>=hiGe ? 'calc-a' : pct>=midGe ? 'calc-m' : 'calc-b';
+  return `<span class="calc ${cls}">${pct.toFixed(2).replace('.',',')}%</span>`;
+}
+
+// ── Stats ────────────────────────────────────────────
+function updateStats() {
+  const conf    = rows.filter(r=>r.status==='Confirmado');
+  const pend    = rows.filter(r=>r.status==='Pendente');
+  const alcT    = rows.reduce((a,r)=>a+pN(r.seg),0);
+  const alcC    = conf.reduce((a,r)=>a+pN(r.seg),0);
+  const starred = rows.filter(r=>+r.stars>0);
+  const avg     = starred.length ? (starred.reduce((a,r)=>a+(+r.stars),0)/starred.length).toFixed(1) : '—';
+
+  document.getElementById('st-total').textContent  = rows.length;
+  document.getElementById('st-conf').textContent   = conf.length;
+  document.getElementById('st-pend').textContent   = pend.length;
+  document.getElementById('st-alcance').textContent= fmt(alcT);
+  document.getElementById('alc-conf').textContent  = fmt(alcC);
+  document.getElementById('alc-total').textContent = fmt(alcT);
+  document.getElementById('avg-stars').textContent = avg==='—'?'—':avg+'★';
+}
+
+// ── Render ───────────────────────────────────────────
+function renderRow(r, i) {
+  const nichoOpts  = NICHOS.map(n=>`<option value="${esc(n)}"${n===r.nicho?' selected':''}>${esc(n)}</option>`).join('');
+  const statusOpts = STATUS.map(s=>`<option value="${s}"${s===r.status?' selected':''}>${SICON[s]||''} ${s}</option>`).join('');
+  const starsHTML  = [1,2,3,4,5].map(v=>`<span class="star${v<=(+r.stars)?' on':''}" onclick="setStar(${i},${v})">★</span>`).join('');
+
+  return `<tr data-idx="${i}">
+    <td class="num">${String(i+1).padStart(2,'0')}</td>
+    <td><input class="campo f-nome${r.nome?' ok':''}" value="${esc(r.nome)}" placeholder="Nome" oninput="field(${i},'nome',this.value)"></td>
+    <td><input class="campo f-handle${r.handle?' ok':''}" value="${esc(r.handle)}" placeholder="@handle" oninput="field(${i},'handle',this.value)"></td>
+    <td><select class="campo f-nicho" onchange="field(${i},'nicho',this.value)">${nichoOpts}</select></td>
+    <td><input class="campo f-seg${r.seg?' ok':''}" value="${esc(r.seg)}" placeholder="ex: 45200" oninput="field(${i},'seg',this.value);refreshCalcs(${i})"></td>
+    <td><input class="campo f-eng${r.eng?' ok':''}" value="${esc(r.eng)}" placeholder="ex: 1800" oninput="field(${i},'eng',this.value);refreshCalcs(${i})"></td>
+    <td id="eng-${i}">${calcHTML(r.eng,r.seg,5,2)}</td>
+    <td><input class="campo f-viz${r.viz?' ok':''}" value="${esc(r.viz)}" placeholder="ex: 8000" oninput="field(${i},'viz',this.value);refreshCalcs(${i})"></td>
+    <td id="viz-${i}">${calcHTML(r.viz,r.seg,20,8)}</td>
+    <td><input class="campo f-loc${r.loc?' ok':''}" style="min-width:88px" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)"></td>
+    <td><select class="campo f-status" onchange="field(${i},'status',this.value);updateStats()">${statusOpts}</select></td>
+    <td><div class="stars">${starsHTML}</div></td>
+    <td><textarea class="campo campo-fb f-fb" placeholder="Como foi a recepção?" oninput="field(${i},'feedback',this.value)">${esc(r.feedback)}</textarea></td>
+    <td><button class="btn-del" onclick="removeRow(${i})" title="Remover">🗑</button></td>
+  </tr>`;
+}
+
+function renderAll() {
+  document.getElementById('tbody').innerHTML = rows.map(renderRow).join('');
+  updateStats();
+  populateNichoFilter();
+  applyFilters();
+  // restore sort headers
+  document.querySelectorAll('th.sort').forEach(th => {
+    th.classList.remove('sa','sd');
+    if (th.dataset.col === sortCol) th.classList.add(sortDir===1?'sa':'sd');
+  });
+}
+
+// ── Field update ─────────────────────────────────────
+function field(i, key, val) {
+  rows[i][key] = val;
+  updateStats();
+  scheduleSave();
+}
+
+function refreshCalcs(i) {
+  const tr = document.querySelector(`#tbody tr[data-idx="${i}"]`);
+  if (!tr) return;
+  const seg = tr.querySelector('.f-seg').value;
+  const eng = tr.querySelector('.f-eng').value;
+  const viz = tr.querySelector('.f-viz').value;
+  rows[i].seg = seg; rows[i].eng = eng; rows[i].viz = viz;
+  document.getElementById('eng-'+i).innerHTML = calcHTML(eng, seg, 5, 2);
+  document.getElementById('viz-'+i).innerHTML = calcHTML(viz, seg, 20, 8);
+  updateStats();
+  scheduleSave();
+}
+
+function setStar(i, val) {
+  rows[i].stars = val;
+  const tr = document.querySelector(`#tbody tr[data-idx="${i}"]`);
+  if (tr) {
+    const div = tr.querySelector('.stars');
+    if (div) div.innerHTML = [1,2,3,4,5].map(v=>`<span class="star${v<=val?' on':''}" onclick="setStar(${i},${v})">★</span>`).join('');
+  }
+  updateStats();
+  scheduleSave();
+}
+
+function addRow() {
+  rows.push({nome:'',handle:'',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''});
+  renderAll();
+  const trs = document.querySelectorAll('#tbody tr');
+  trs[trs.length-1]?.scrollIntoView({behavior:'smooth',block:'center'});
+  scheduleSave();
+}
+
+function removeRow(i) {
+  const nome = rows[i]?.nome || 'este influenciador';
+  if (!confirm(`Remover "${nome}"?`)) return;
+  rows.splice(i,1);
+  renderAll();
+  scheduleSave();
+}
+
+// ── Sort ─────────────────────────────────────────────
+function sortBy(col) {
+  pullDOM();
+  if (sortCol===col) sortDir*=-1; else { sortCol=col; sortDir=1; }
+  rows.sort((a,b) => {
+    let va=0, vb=0;
+    const sa=pN(a.seg), sb=pN(b.seg);
+    if      (col==='seg')    { va=sa; vb=sb; }
+    else if (col==='eng')    { va=pN(a.eng); vb=pN(b.eng); }
+    else if (col==='viz')    { va=pN(a.viz); vb=pN(b.viz); }
+    else if (col==='stars')  { va=+(a.stars||0); vb=+(b.stars||0); }
+    else if (col==='engpct') { va=sa?pN(a.eng)/sa:0; vb=sb?pN(b.eng)/sb:0; }
+    else if (col==='vizpct') { va=sa?pN(a.viz)/sa:0; vb=sb?pN(b.viz)/sb:0; }
+    return (va-vb)*sortDir;
+  });
+  renderAll();
+}
+
+// ── Filters ──────────────────────────────────────────
+function populateNichoFilter() {
+  const sel = document.getElementById('f-nicho');
+  const cur = sel.value;
+  const opts = [...new Set(rows.map(r=>r.nicho).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">Todos</option>' + opts.map(n=>`<option value="${esc(n)}"${n===cur?' selected':''}>${esc(n)}</option>`).join('');
+}
+
+function applyFilters() {
+  const busca  = (document.getElementById('f-busca').value||'').toLowerCase();
+  const nicho  = document.getElementById('f-nicho').value||'';
+  const status = document.getElementById('f-status').value||'';
+  const segMin = pN(document.getElementById('f-seg-min').value||'');
+  const stars  = +(document.getElementById('f-stars').value||0);
+  let vis = 0;
+  document.querySelectorAll('#tbody tr[data-idx]').forEach(tr => {
+    const r = rows[+tr.dataset.idx];
+    if (!r) return;
+    const ok =
+      (!busca  || r.nome.toLowerCase().includes(busca) || (r.handle||'').toLowerCase().includes(busca)) &&
+      (!nicho  || r.nicho===nicho) &&
+      (!status || r.status===status) &&
+      (!segMin || pN(r.seg)>=segMin) &&
+      (stars===0 || +(r.stars||0)>=stars);
+    tr.classList.toggle('hidden', !ok);
+    if (ok) vis++;
+  });
+  const fc = document.getElementById('fcount');
+  fc.innerHTML = vis < rows.length
+    ? `Mostrando <span>${vis}</span> de <span>${rows.length}</span>`
+    : `<span>${rows.length}</span> influenciadores`;
+}
+
+function clearFilters() {
+  document.getElementById('f-busca').value='';
+  document.getElementById('f-nicho').value='';
+  document.getElementById('f-status').value='';
+  document.getElementById('f-seg-min').value='';
+  document.getElementById('f-stars').value='0';
+  applyFilters();
+}
+
+// ── CSV ──────────────────────────────────────────────
+function exportCSV() {
+  pullDOM();
+  const hdr = ['#','Nome','Handle','Nicho','Seg. Instagram','Eng. Médio','% Eng.','Viz. média','Viz. ÷ Seg.','Localização','Status','Estrelas','Feedback'];
+  const body = rows.map((r,i) => {
+    const s=pN(r.seg),e=pN(r.eng),v=pN(r.viz);
+    const ep=s&&e?(e/s*100).toFixed(2)+'%':'';
+    const vp=s&&v?(v/s*100).toFixed(2)+'%':'';
+    return [i+1,r.nome,r.handle,r.nicho,r.seg,r.eng,ep,r.viz,vp,r.loc,r.status,r.stars||0,r.feedback]
+      .map(x=>`"${String(x).replace(/"/g,'""')}"`)
+      .join(',');
+  });
+  const csv = [hdr.join(','), ...body].join('\n');
+
+  // Mostra modal com textarea para copiar
+  let modal = document.getElementById('csv-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'csv-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+    modal.innerHTML = `
+      <div style="background:#1e1e1e;border:1px solid #333;border-radius:12px;padding:24px;width:100%;max-width:680px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong style="font-size:15px">📋 Copie o CSV abaixo</strong>
+          <button onclick="document.getElementById('csv-modal').remove()" style="background:none;border:none;color:#888;font-size:20px;cursor:pointer">✕</button>
+        </div>
+        <p style="font-size:12px;color:#888">Selecione tudo (Ctrl+A), copie (Ctrl+C) e cole no Google Sheets ou Excel.</p>
+        <textarea id="csv-area" style="width:100%;height:260px;background:#111;border:1.5px solid #333;border-radius:8px;color:#f5f5f5;font-family:monospace;font-size:11px;padding:10px;resize:vertical;outline:none"></textarea>
+        <button onclick="copiarCSV()" style="background:#1DB954;color:#fff;border:none;border-radius:7px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">⎘ Copiar tudo</button>
+        <span id="csv-copied" style="font-size:12px;color:#1DB954;text-align:center;display:none">✓ Copiado!</span>
+      </div>`;
+    document.body.appendChild(modal);
+  }
+  document.getElementById('csv-area').value = csv;
+  modal.style.display = 'flex';
+}
+
+function copiarCSV() {
+  const ta = document.getElementById('csv-area');
+  ta.select();
+  try {
+    navigator.clipboard.writeText(ta.value).catch(()=>document.execCommand('copy'));
+  } catch(e) { document.execCommand('copy'); }
+  const el = document.getElementById('csv-copied');
+  el.style.display = 'block';
+  setTimeout(()=>el.style.display='none', 2500);
+}
+
+// ── Init ─────────────────────────────────────────────
+(async () => {
+  rows = await loadRows();
+  renderAll();
+  document.getElementById('loading').style.display = 'none';
+})();
+</script>
+</body>
+</html>
