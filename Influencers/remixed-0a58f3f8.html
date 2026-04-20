@@ -88,6 +88,36 @@
   #loading{position:fixed;inset:0;background:rgba(17,17,17,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:999;font-size:15px;color:var(--branco)}
   .spinner{width:34px;height:34px;border:3px solid #333;border-top-color:var(--laranja);border-radius:50%;animation:spin .7s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ── Cards (mobile) ── */
+  #cards-container{display:none;flex-direction:column;gap:12px}
+  .card-item{background:var(--medio);border:1px solid var(--claro);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+  .card-item.hidden{display:none!important}
+  .card-top{display:flex;align-items:flex-start;gap:8px}
+  .card-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--texto);min-width:26px;padding-top:7px}
+  .card-identity{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+  .card-mid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .card-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .cm{display:flex;flex-direction:column;gap:3px}
+  .cm-lbl{font-size:9px;color:var(--texto);text-transform:uppercase;letter-spacing:.8px}
+  .card-bottom{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .cb-full{grid-column:1/-1}
+  .cb-field{display:flex;flex-direction:column;gap:3px}
+
+  @media(max-width:768px){
+    .table-wrapper{display:none}
+    #cards-container{display:flex}
+    .stats-bar{display:grid;grid-template-columns:1fr 1fr}
+    .filter-bar{flex-direction:column;gap:8px}
+    .filter-bar .fg{width:100%}
+    .filter-bar .fg .fi{flex:1;width:100%}
+    .filter-bar .btn-cf{width:100%;padding:8px}
+    .toolbar{gap:8px}
+    .toolbar .btn{flex:1;justify-content:center;padding:10px 8px}
+    .total-bar{flex-direction:column;gap:10px;text-align:center}
+    body{padding:16px 10px 60px}
+    header{margin-bottom:16px}
+  }
 </style>
 </head>
 <body>
@@ -155,6 +185,8 @@
   <tbody id="tbody"></tbody>
 </table>
 </div>
+
+<div id="cards-container"></div>
 
 <div class="total-bar">
   <div><div class="lbl">Alcance confirmados</div><div class="val" id="alc-conf">—</div><div class="sub">Só confirmados</div></div>
@@ -268,7 +300,21 @@ function pullDOM() {
     rows[i].loc       = tr.querySelector('.f-loc')?.value       ?? '';
     rows[i].dataEnvio = tr.querySelector('.f-dataenvio')?.value ?? '';
     rows[i].status    = tr.querySelector('.f-status')?.value    ?? '';
-    rows[i].feedback = tr.querySelector('.f-fb')?.value      ?? '';
+    rows[i].feedback  = tr.querySelector('.f-fb')?.value        ?? '';
+  });
+  document.querySelectorAll('#cards-container .card-item[data-idx]').forEach(card => {
+    const i = +card.dataset.idx;
+    if (!rows[i]) return;
+    rows[i].nome      = card.querySelector('.cc-nome')?.value      ?? rows[i].nome;
+    rows[i].handle    = card.querySelector('.cc-handle')?.value    ?? rows[i].handle;
+    rows[i].nicho     = card.querySelector('.cc-nicho')?.value     ?? rows[i].nicho;
+    rows[i].seg       = card.querySelector('.cc-seg')?.value       ?? rows[i].seg;
+    rows[i].eng       = card.querySelector('.cc-eng')?.value       ?? rows[i].eng;
+    rows[i].viz       = card.querySelector('.cc-viz')?.value       ?? rows[i].viz;
+    rows[i].loc       = card.querySelector('.cc-loc')?.value       ?? rows[i].loc;
+    rows[i].dataEnvio = card.querySelector('.cc-dataenvio')?.value ?? rows[i].dataEnvio;
+    rows[i].status    = card.querySelector('.cc-status')?.value    ?? rows[i].status;
+    rows[i].feedback  = card.querySelector('.cc-fb')?.value        ?? rows[i].feedback;
   });
 }
 
@@ -335,8 +381,42 @@ function renderRow(r, i) {
   </tr>`;
 }
 
+function renderCard(r, i) {
+  const nichoOpts  = NICHOS.map(n=>`<option value="${esc(n)}"${n===r.nicho?' selected':''}>${esc(n)}</option>`).join('');
+  const statusOpts = STATUS.map(s=>`<option value="${s}"${s===r.status?' selected':''}>${SICON[s]||''} ${s}</option>`).join('');
+  const starsHTML  = [1,2,3,4,5].map(v=>`<span class="star${v<=(+r.stars)?' on':''}" onclick="setStar(${i},${v})">★</span>`).join('');
+  return `<div class="card-item" data-idx="${i}">
+    <div class="card-top">
+      <span class="card-num">${String(i+1).padStart(2,'0')}</span>
+      <div class="card-identity">
+        <input class="campo cc-nome${r.nome?' ok':''}" value="${esc(r.nome)}" placeholder="Nome" oninput="field(${i},'nome',this.value)">
+        <input class="campo cc-handle${r.handle?' ok':''}" value="${esc(r.handle)}" placeholder="@handle" style="font-size:12px;color:var(--texto)" oninput="field(${i},'handle',this.value)">
+      </div>
+      <select class="campo cc-status" style="max-width:130px" onchange="field(${i},'status',this.value);updateStats()">${statusOpts}</select>
+      <button class="btn-del" onclick="removeRow(${i})" title="Remover">🗑</button>
+    </div>
+    <div class="card-mid">
+      <select class="campo cc-nicho" onchange="field(${i},'nicho',this.value)">${nichoOpts}</select>
+      <input class="campo cc-loc${r.loc?' ok':''}" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)">
+    </div>
+    <div class="card-metrics">
+      <div class="cm"><span class="cm-lbl">Seguidores</span><input class="campo cc-seg${r.seg?' ok':''}" value="${esc(r.seg)}" placeholder="45000" oninput="field(${i},'seg',this.value);refreshCalcs(${i})"></div>
+      <div class="cm"><span class="cm-lbl">Eng. Médio</span><input class="campo cc-eng${r.eng?' ok':''}" value="${esc(r.eng)}" placeholder="250" oninput="field(${i},'eng',this.value);refreshCalcs(${i})"></div>
+      <div class="cm"><span class="cm-lbl">% Eng.</span><div id="ceng-${i}" style="padding:7px 0">${calcHTML(r.eng,r.seg,5,2)}</div></div>
+      <div class="cm"><span class="cm-lbl">Viz. média</span><input class="campo cc-viz${r.viz?' ok':''}" value="${esc(r.viz)}" placeholder="17700" oninput="field(${i},'viz',this.value);refreshCalcs(${i})"></div>
+      <div class="cm"><span class="cm-lbl">Viz. ÷ Seg.</span><div id="cviz-${i}" style="padding:7px 0">${calcHTML(r.viz,r.seg,20,8)}</div></div>
+    </div>
+    <div class="card-bottom">
+      <div class="cb-field"><span class="cm-lbl">Data de Envio</span><input class="campo cc-dataenvio${r.dataEnvio?' ok':''}" type="date" value="${esc(r.dataEnvio||'')}" style="color-scheme:dark" oninput="field(${i},'dataEnvio',this.value)"></div>
+      <div class="cb-field"><span class="cm-lbl">⭐ Cesta</span><div class="stars">${starsHTML}</div></div>
+      <div class="cb-field cb-full"><span class="cm-lbl">Feedback</span><textarea class="campo cc-fb" placeholder="Como foi a recepção?" oninput="field(${i},'feedback',this.value)">${esc(r.feedback)}</textarea></div>
+    </div>
+  </div>`;
+}
+
 function renderAll() {
   document.getElementById('tbody').innerHTML = rows.map(renderRow).join('');
+  document.getElementById('cards-container').innerHTML = rows.map(renderCard).join('');
   updateStats();
   populateNichoFilter();
   applyFilters();
@@ -355,25 +435,38 @@ function field(i, key, val) {
 }
 
 function refreshCalcs(i) {
-  const tr = document.querySelector(`#tbody tr[data-idx="${i}"]`);
-  if (!tr) return;
-  const seg = tr.querySelector('.f-seg').value;
-  const eng = tr.querySelector('.f-eng').value;
-  const viz = tr.querySelector('.f-viz').value;
+  const tr   = document.querySelector(`#tbody tr[data-idx="${i}"]`);
+  const card = document.querySelector(`#cards-container .card-item[data-idx="${i}"]`);
+  const seg = tr?.querySelector('.f-seg')?.value ?? card?.querySelector('.cc-seg')?.value ?? '';
+  const eng = tr?.querySelector('.f-eng')?.value ?? card?.querySelector('.cc-eng')?.value ?? '';
+  const viz = tr?.querySelector('.f-viz')?.value ?? card?.querySelector('.cc-viz')?.value ?? '';
   rows[i].seg = seg; rows[i].eng = eng; rows[i].viz = viz;
-  document.getElementById('eng-'+i).innerHTML = calcHTML(eng, seg, 5, 2);
-  document.getElementById('viz-'+i).innerHTML = calcHTML(viz, seg, 20, 8);
+  const html_eng = calcHTML(eng, seg, 5, 2);
+  const html_viz = calcHTML(viz, seg, 20, 8);
+  const engEl = document.getElementById('eng-'+i);
+  const vizEl = document.getElementById('viz-'+i);
+  if (engEl) engEl.innerHTML = html_eng;
+  if (vizEl) vizEl.innerHTML = html_viz;
+  const cengEl = document.getElementById('ceng-'+i);
+  const cvizEl = document.getElementById('cviz-'+i);
+  if (cengEl) cengEl.innerHTML = html_eng;
+  if (cvizEl) cvizEl.innerHTML = html_viz;
   updateStats();
   scheduleSave();
 }
 
+function starsInner(i, val) {
+  return [1,2,3,4,5].map(v=>`<span class="star${v<=val?' on':''}" onclick="setStar(${i},${v})">★</span>`).join('');
+}
+
 function setStar(i, val) {
   rows[i].stars = val;
-  const tr = document.querySelector(`#tbody tr[data-idx="${i}"]`);
-  if (tr) {
-    const div = tr.querySelector('.stars');
-    if (div) div.innerHTML = [1,2,3,4,5].map(v=>`<span class="star${v<=val?' on':''}" onclick="setStar(${i},${v})">★</span>`).join('');
-  }
+  [
+    document.querySelector(`#tbody tr[data-idx="${i}"]`),
+    document.querySelector(`#cards-container .card-item[data-idx="${i}"]`)
+  ].forEach(el => {
+    if (el) { const d = el.querySelector('.stars'); if (d) d.innerHTML = starsInner(i, val); }
+  });
   updateStats();
   scheduleSave();
 }
@@ -428,17 +521,20 @@ function applyFilters() {
   const segMin = pN(document.getElementById('f-seg-min').value||'');
   const stars  = +(document.getElementById('f-stars').value||0);
   let vis = 0;
+  const matchRow = r => r &&
+    (!busca  || r.nome.toLowerCase().includes(busca) || (r.handle||'').toLowerCase().includes(busca)) &&
+    (!nicho  || r.nicho===nicho) &&
+    (!status || r.status===status) &&
+    (!segMin || pN(r.seg)>=segMin) &&
+    (stars===0 || +(r.stars||0)>=stars);
+
   document.querySelectorAll('#tbody tr[data-idx]').forEach(tr => {
-    const r = rows[+tr.dataset.idx];
-    if (!r) return;
-    const ok =
-      (!busca  || r.nome.toLowerCase().includes(busca) || (r.handle||'').toLowerCase().includes(busca)) &&
-      (!nicho  || r.nicho===nicho) &&
-      (!status || r.status===status) &&
-      (!segMin || pN(r.seg)>=segMin) &&
-      (stars===0 || +(r.stars||0)>=stars);
+    const ok = matchRow(rows[+tr.dataset.idx]);
     tr.classList.toggle('hidden', !ok);
     if (ok) vis++;
+  });
+  document.querySelectorAll('#cards-container .card-item[data-idx]').forEach(card => {
+    card.classList.toggle('hidden', !matchRow(rows[+card.dataset.idx]));
   });
   const fc = document.getElementById('fcount');
   fc.innerHTML = vis < rows.length
