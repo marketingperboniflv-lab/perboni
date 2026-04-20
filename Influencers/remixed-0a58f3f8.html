@@ -290,34 +290,37 @@ function setMsg(txt, cls) {
 
 // ── DOM → rows ───────────────────────────────────────
 function pullDOM() {
-  document.querySelectorAll('#tbody tr[data-idx]').forEach(tr => {
-    const i = +tr.dataset.idx;
-    if (!rows[i]) return;
-    rows[i].nome     = tr.querySelector('.f-nome')?.value    ?? '';
-    rows[i].handle   = tr.querySelector('.f-handle')?.value  ?? '';
-    rows[i].nicho    = tr.querySelector('.f-nicho')?.value   ?? '';
-    rows[i].seg      = tr.querySelector('.f-seg')?.value     ?? '';
-    rows[i].eng      = tr.querySelector('.f-eng')?.value     ?? '';
-    rows[i].viz      = tr.querySelector('.f-viz')?.value     ?? '';
-    rows[i].loc       = tr.querySelector('.f-loc')?.value       ?? '';
-    rows[i].dataEnvio = tr.querySelector('.f-dataenvio')?.value ?? '';
-    rows[i].status    = tr.querySelector('.f-status')?.value    ?? '';
-    rows[i].feedback  = tr.querySelector('.f-fb')?.value        ?? '';
-  });
-  document.querySelectorAll('#cards-container .card-item[data-idx]').forEach(card => {
-    const i = +card.dataset.idx;
-    if (!rows[i]) return;
-    rows[i].nome      = card.querySelector('.cc-nome')?.value      ?? rows[i].nome;
-    rows[i].handle    = card.querySelector('.cc-handle')?.value    ?? rows[i].handle;
-    rows[i].nicho     = card.querySelector('.cc-nicho')?.value     ?? rows[i].nicho;
-    rows[i].seg       = card.querySelector('.cc-seg')?.value       ?? rows[i].seg;
-    rows[i].eng       = card.querySelector('.cc-eng')?.value       ?? rows[i].eng;
-    rows[i].viz       = card.querySelector('.cc-viz')?.value       ?? rows[i].viz;
-    rows[i].loc       = card.querySelector('.cc-loc')?.value       ?? rows[i].loc;
-    rows[i].dataEnvio = card.querySelector('.cc-dataenvio')?.value ?? rows[i].dataEnvio;
-    rows[i].status    = card.querySelector('.cc-status')?.value    ?? rows[i].status;
-    rows[i].feedback  = card.querySelector('.cc-fb')?.value        ?? rows[i].feedback;
-  });
+  if (window.innerWidth > 768) {
+    document.querySelectorAll('#tbody tr[data-idx]').forEach(tr => {
+      const i = +tr.dataset.idx;
+      if (!rows[i]) return;
+      rows[i].nome      = tr.querySelector('.f-nome')?.value      ?? '';
+      rows[i].handle    = tr.querySelector('.f-handle')?.value    ?? '';
+      rows[i].nicho     = tr.querySelector('.f-nicho')?.value     ?? '';
+      rows[i].seg       = tr.querySelector('.f-seg')?.value       ?? '';
+      rows[i].eng       = tr.querySelector('.f-eng')?.value       ?? '';
+      rows[i].viz       = tr.querySelector('.f-viz')?.value       ?? '';
+      rows[i].loc       = tr.querySelector('.f-loc')?.value       ?? '';
+      rows[i].dataEnvio = tr.querySelector('.f-dataenvio')?.value ?? '';
+      rows[i].status    = tr.querySelector('.f-status')?.value    ?? '';
+      rows[i].feedback  = tr.querySelector('.f-fb')?.value        ?? '';
+    });
+  } else {
+    document.querySelectorAll('#cards-container .card-item[data-idx]').forEach(card => {
+      const i = +card.dataset.idx;
+      if (!rows[i]) return;
+      rows[i].nome      = card.querySelector('.cc-nome')?.value      ?? '';
+      rows[i].handle    = card.querySelector('.cc-handle')?.value    ?? '';
+      rows[i].nicho     = card.querySelector('.cc-nicho')?.value     ?? '';
+      rows[i].seg       = card.querySelector('.cc-seg')?.value       ?? '';
+      rows[i].eng       = card.querySelector('.cc-eng')?.value       ?? '';
+      rows[i].viz       = card.querySelector('.cc-viz')?.value       ?? '';
+      rows[i].loc       = card.querySelector('.cc-loc')?.value       ?? '';
+      rows[i].dataEnvio = card.querySelector('.cc-dataenvio')?.value ?? '';
+      rows[i].status    = card.querySelector('.cc-status')?.value    ?? '';
+      rows[i].feedback  = card.querySelector('.cc-fb')?.value        ?? '';
+    });
+  }
 }
 
 // ── Utils ────────────────────────────────────────────
@@ -656,6 +659,17 @@ function copiarCSV() {
   rows = await loadRows();
   renderAll();
   document.getElementById('loading').style.display = 'none';
+
+  // Re-render when switching between mobile and desktop so both views stay in sync
+  let prevMobile = window.innerWidth <= 768;
+  window.addEventListener('resize', () => {
+    const mobile = window.innerWidth <= 768;
+    if (mobile !== prevMobile) {
+      prevMobile = mobile;
+      pullDOM();
+      renderAll();
+    }
+  });
 })();
 </script>
 </body>
