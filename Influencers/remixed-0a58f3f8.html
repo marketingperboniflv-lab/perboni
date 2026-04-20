@@ -146,6 +146,7 @@
     <th class="sort" data-col="viz" onclick="sortBy('viz')">Viz. média/Reel<span class="si"></span></th>
     <th class="sort" data-col="vizpct" onclick="sortBy('vizpct')">Viz. ÷ Seg.<span class="si"></span></th>
     <th>Localização</th>
+    <th class="sort" data-col="dataEnvio" onclick="sortBy('dataEnvio')">Data de Envio<span class="si"></span></th>
     <th>Status</th>
     <th class="sort" data-col="stars" onclick="sortBy('stars')">⭐ Cesta<span class="si"></span></th>
     <th>Feedback cesta</th>
@@ -264,8 +265,9 @@ function pullDOM() {
     rows[i].seg      = tr.querySelector('.f-seg')?.value     ?? '';
     rows[i].eng      = tr.querySelector('.f-eng')?.value     ?? '';
     rows[i].viz      = tr.querySelector('.f-viz')?.value     ?? '';
-    rows[i].loc      = tr.querySelector('.f-loc')?.value     ?? '';
-    rows[i].status   = tr.querySelector('.f-status')?.value  ?? '';
+    rows[i].loc       = tr.querySelector('.f-loc')?.value       ?? '';
+    rows[i].dataEnvio = tr.querySelector('.f-dataenvio')?.value ?? '';
+    rows[i].status    = tr.querySelector('.f-status')?.value    ?? '';
     rows[i].feedback = tr.querySelector('.f-fb')?.value      ?? '';
   });
 }
@@ -325,6 +327,7 @@ function renderRow(r, i) {
     <td><input class="campo f-viz${r.viz?' ok':''}" value="${esc(r.viz)}" placeholder="ex: 8000" oninput="field(${i},'viz',this.value);refreshCalcs(${i})"></td>
     <td id="viz-${i}">${calcHTML(r.viz,r.seg,20,8)}</td>
     <td><input class="campo f-loc${r.loc?' ok':''}" style="min-width:88px" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)"></td>
+    <td><input class="campo f-dataenvio${r.dataEnvio?' ok':''}" type="date" value="${esc(r.dataEnvio||'')}" oninput="field(${i},'dataEnvio',this.value)" style="min-width:130px;color-scheme:dark"></td>
     <td><select class="campo f-status" onchange="field(${i},'status',this.value);updateStats()">${statusOpts}</select></td>
     <td><div class="stars">${starsHTML}</div></td>
     <td><textarea class="campo campo-fb f-fb" placeholder="Como foi a recepção?" oninput="field(${i},'feedback',this.value)">${esc(r.feedback)}</textarea></td>
@@ -403,7 +406,8 @@ function sortBy(col) {
     else if (col==='viz')    { va=pN(a.viz); vb=pN(b.viz); }
     else if (col==='stars')  { va=+(a.stars||0); vb=+(b.stars||0); }
     else if (col==='engpct') { va=sa?pN(a.eng)/sa:0; vb=sb?pN(b.eng)/sb:0; }
-    else if (col==='vizpct') { va=sa?pN(a.viz)/sa:0; vb=sb?pN(b.viz)/sb:0; }
+    else if (col==='vizpct')    { va=sa?pN(a.viz)/sa:0; vb=sb?pN(b.viz)/sb:0; }
+    else if (col==='dataEnvio') { va=a.dataEnvio||''; vb=b.dataEnvio||''; return va<vb?-sortDir:va>vb?sortDir:0; }
     return (va-vb)*sortDir;
   });
   renderAll();
@@ -454,12 +458,12 @@ function clearFilters() {
 // ── CSV ──────────────────────────────────────────────
 function exportCSV() {
   pullDOM();
-  const hdr = ['#','Nome','Handle','Nicho','Seg. Instagram','Eng. Médio','% Eng.','Viz. média','Viz. ÷ Seg.','Localização','Status','Estrelas','Feedback'];
+  const hdr = ['#','Nome','Handle','Nicho','Seg. Instagram','Eng. Médio','% Eng.','Viz. média','Viz. ÷ Seg.','Localização','Data de Envio','Status','Estrelas','Feedback'];
   const body = rows.map((r,i) => {
     const s=pN(r.seg),e=pN(r.eng),v=pN(r.viz);
     const ep=s&&e?(e/s*100).toFixed(2)+'%':'';
     const vp=s&&v?(v/s*100).toFixed(2)+'%':'';
-    return [i+1,r.nome,r.handle,r.nicho,r.seg,r.eng,ep,r.viz,vp,r.loc,r.status,r.stars||0,r.feedback]
+    return [i+1,r.nome,r.handle,r.nicho,r.seg,r.eng,ep,r.viz,vp,r.loc,r.dataEnvio||'',r.status,r.stars||0,r.feedback]
       .map(x=>`"${String(x).replace(/"/g,'""')}"`)
       .join(',');
   });
