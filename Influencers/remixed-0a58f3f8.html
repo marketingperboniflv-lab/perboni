@@ -76,6 +76,8 @@
   .campo-fb{min-width:140px;min-height:34px;resize:vertical}
   .btn-del{background:none;border:none;color:#555;cursor:pointer;font-size:15px;padding:2px 5px;border-radius:4px;transition:color .2s}
   .btn-del:hover{color:#f87171}
+  .btn-nicho-back{background:none;border:1px solid #444;border-radius:5px;color:#888;cursor:pointer;padding:4px 8px;font-size:12px;white-space:nowrap;transition:color .2s,border-color .2s;font-family:'DM Sans',sans-serif}
+  .btn-nicho-back:hover{color:var(--laranja);border-color:var(--laranja)}
 
   .total-bar{background:linear-gradient(135deg,var(--medio),#252525);border:1px solid var(--claro);border-radius:10px;padding:18px 24px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
   .total-bar .lbl{font-size:11px;color:var(--texto);text-transform:uppercase;letter-spacing:1px}
@@ -338,6 +340,48 @@ function calcHTML(num, den, hiGe, midGe) {
   return `<span class="calc ${cls}">${pct.toFixed(2).replace('.',',')}%</span>`;
 }
 
+// ── Nicho personalizado ──────────────────────────────
+function nichoFieldHTML(i, r, cls) {
+  const isCustom = r.nicho !== '' && !NICHOS.includes(r.nicho);
+  if (isCustom) {
+    return `<div style="display:flex;gap:4px;align-items:center">
+      <input class="campo ${cls} ok" value="${esc(r.nicho)}" placeholder="Nicho personalizado…" oninput="field(${i},'nicho',this.value)" style="min-width:90px">
+      <button class="btn-nicho-back" onclick="backToNichoList(${i})" title="Voltar à lista">↩ lista</button>
+    </div>`;
+  }
+  const opts = NICHOS.map(n=>`<option value="${esc(n)}"${n===r.nicho?' selected':''}>${esc(n)}</option>`).join('');
+  return `<select class="campo ${cls}" onchange="onNichoChange(${i},this)">${opts}</select>`;
+}
+
+function reRenderNichoCell(i) {
+  const tr   = document.querySelector(`#tbody tr[data-idx="${i}"]`);
+  const card = document.querySelector(`#cards-container .card-item[data-idx="${i}"]`);
+  if (tr)   { const c = tr.querySelector('.nicho-cell');   if (c) c.innerHTML = nichoFieldHTML(i, rows[i], 'f-nicho'); }
+  if (card) { const c = card.querySelector('.nicho-cell'); if (c) c.innerHTML = nichoFieldHTML(i, rows[i], 'cc-nicho'); }
+}
+
+function onNichoChange(i, sel) {
+  if (sel.value === 'Outro') {
+    rows[i].nicho = '';
+    reRenderNichoCell(i);
+    setTimeout(() => {
+      [
+        document.querySelector(`#tbody tr[data-idx="${i}"] .nicho-cell input`),
+        document.querySelector(`#cards-container .card-item[data-idx="${i}"] .nicho-cell input`)
+      ].forEach(inp => inp?.focus());
+    }, 50);
+    scheduleSave();
+  } else {
+    field(i, 'nicho', sel.value);
+  }
+}
+
+function backToNichoList(i) {
+  rows[i].nicho = NICHOS[0];
+  reRenderNichoCell(i);
+  scheduleSave();
+}
+
 // ── Stats ────────────────────────────────────────────
 function updateStats() {
   const conf    = rows.filter(r=>r.status==='Confirmado');
@@ -358,7 +402,6 @@ function updateStats() {
 
 // ── Render ───────────────────────────────────────────
 function renderRow(r, i) {
-  const nichoOpts  = NICHOS.map(n=>`<option value="${esc(n)}"${n===r.nicho?' selected':''}>${esc(n)}</option>`).join('');
   const statusOpts = STATUS.map(s=>`<option value="${s}"${s===r.status?' selected':''}>${SICON[s]||''} ${s}</option>`).join('');
   const starsHTML  = [1,2,3,4,5].map(v=>`<span class="star${v<=(+r.stars)?' on':''}" onclick="setStar(${i},${v})">★</span>`).join('');
 
@@ -366,7 +409,7 @@ function renderRow(r, i) {
     <td class="num">${String(i+1).padStart(2,'0')}</td>
     <td><input class="campo f-nome${r.nome?' ok':''}" value="${esc(r.nome)}" placeholder="Nome" oninput="field(${i},'nome',this.value)"></td>
     <td><input class="campo f-handle${r.handle?' ok':''}" value="${esc(r.handle)}" placeholder="@handle" oninput="field(${i},'handle',this.value)"></td>
-    <td><select class="campo f-nicho" onchange="field(${i},'nicho',this.value)">${nichoOpts}</select></td>
+    <td class="nicho-cell">${nichoFieldHTML(i,r,'f-nicho')}</td>
     <td><input class="campo f-seg${r.seg?' ok':''}" value="${esc(r.seg)}" placeholder="ex: 45200" oninput="field(${i},'seg',this.value);refreshCalcs(${i})"></td>
     <td><input class="campo f-eng${r.eng?' ok':''}" value="${esc(r.eng)}" placeholder="ex: 1800" oninput="field(${i},'eng',this.value);refreshCalcs(${i})"></td>
     <td id="eng-${i}">${calcHTML(r.eng,r.seg,5,2)}</td>
@@ -382,7 +425,6 @@ function renderRow(r, i) {
 }
 
 function renderCard(r, i) {
-  const nichoOpts  = NICHOS.map(n=>`<option value="${esc(n)}"${n===r.nicho?' selected':''}>${esc(n)}</option>`).join('');
   const statusOpts = STATUS.map(s=>`<option value="${s}"${s===r.status?' selected':''}>${SICON[s]||''} ${s}</option>`).join('');
   const starsHTML  = [1,2,3,4,5].map(v=>`<span class="star${v<=(+r.stars)?' on':''}" onclick="setStar(${i},${v})">★</span>`).join('');
   return `<div class="card-item" data-idx="${i}">
@@ -396,7 +438,7 @@ function renderCard(r, i) {
       <button class="btn-del" onclick="removeRow(${i})" title="Remover">🗑</button>
     </div>
     <div class="card-mid">
-      <select class="campo cc-nicho" onchange="field(${i},'nicho',this.value)">${nichoOpts}</select>
+      <div class="nicho-cell">${nichoFieldHTML(i,r,'cc-nicho')}</div>
       <input class="campo cc-loc${r.loc?' ok':''}" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)">
     </div>
     <div class="card-metrics">
@@ -472,10 +514,20 @@ function setStar(i, val) {
 }
 
 function addRow() {
-  rows.push({nome:'',handle:'',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''});
+  rows.push({nome:'',handle:'',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,dataEnvio:'',feedback:''});
   renderAll();
-  const trs = document.querySelectorAll('#tbody tr');
-  trs[trs.length-1]?.scrollIntoView({behavior:'smooth',block:'center'});
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    const cards = document.querySelectorAll('#cards-container .card-item');
+    const last  = cards[cards.length - 1];
+    last?.scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(() => last?.querySelector('.cc-nome')?.focus(), 400);
+  } else {
+    const trs  = document.querySelectorAll('#tbody tr');
+    const last = trs[trs.length - 1];
+    last?.scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(() => last?.querySelector('.f-nome')?.focus(), 400);
+  }
   scheduleSave();
 }
 
