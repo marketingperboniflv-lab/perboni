@@ -217,24 +217,24 @@ const STATUS = ['Pendente','Confirmado','Negociando','Declinado'];
 const SICON  = {Confirmado:'✓',Pendente:'⏳',Negociando:'🤝',Declinado:'✗'};
 
 const DEFAULTS = [
-  {nome:'Tuany',handle:'@turibeiro',nicho:'Corrida',seg:'45000',eng:'250',viz:'17700',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Clara Machado',handle:'@claramachadofit2',nicho:'Fitness / Corrida',seg:'29700',eng:'3000',viz:'97000',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Reca Meneses',handle:'@recameneses',nicho:'Corrida',seg:'63000',eng:'100',viz:'7700',loc:'Goiânia/GO',status:'Pendente',stars:5,feedback:''},
-  {nome:'Larissa Fabrine',handle:'@lahfabrini',nicho:'Corrida / Lifestyle',seg:'155000',eng:'3000',viz:'34150',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Correndo Com Raika',handle:'@correndocomraika',nicho:'Corrida (Pet)',seg:'237000',eng:'2500',viz:'73000',loc:'Brasil',status:'Pendente',stars:0,feedback:''},
-  {nome:'Cami Pires',handle:'@camipiresveg',nicho:'Vegano / Estilo de vida',seg:'50500',eng:'150',viz:'4000',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Nathalia França',handle:'@nathyfrancaa',nicho:'Corrida / Bem-estar',seg:'443000',eng:'5000',viz:'120000',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Los Porpetas',handle:'@losporpetas',nicho:'Humor / Gastronomia',seg:'364000',eng:'3000',viz:'93000',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Izabella Camargo',handle:'@camarguinha',nicho:'Saúde Mental / Lifestyle',seg:'123000',eng:'300',viz:'15100',loc:'São Paulo/SP',status:'Pendente',stars:0,feedback:''},
-  {nome:'Jessica Soares',handle:'@_jessica.ssoares_',nicho:'Corrida / Esporte',seg:'97100',eng:'500',viz:'13200',loc:'Brasil',status:'Pendente',stars:0,feedback:''},
-  {nome:'Raniele Oliveira',handle:'@ranieleoli',nicho:'Corrida / Lifestyle',seg:'203000',eng:'1800',viz:'40000',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Patrícia Pam & William',handle:'@patriciapamm',nicho:'Entretenimento / Casal',seg:'1300000',eng:'15000',viz:'303000',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Vandin',handle:'@enquantoissoemGoias',nicho:'Humor / Portal Goiano',seg:'877000',eng:'1000',viz:'57000',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Lucas Peixoto',handle:'@falooquequero',nicho:'Humor / Entretenimento',seg:'1800000',eng:'5000',viz:'145000',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Gabriel',handle:'@ehgoiania',nicho:'Humor / Entretenimento',seg:'235000',eng:'1500',viz:'18600',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Cláudio Silvério',handle:'@ctsilverio',nicho:'Jornalismo / Esporte',seg:'62000',eng:'400',viz:'5600',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'Diretor da Record',handle:'—',nicho:'Mídia / TV',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
-  {nome:'',handle:'',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''}
+  {nome:'Tuany',handle:'@turibeiro',nicho:'Corrida',seg:'45000',eng:'250',viz:'17700',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Clara Machado',handle:'@claramachadofit2',nicho:'Fitness / Corrida',seg:'29700',eng:'3000',viz:'97000',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Reca Meneses',handle:'@recameneses',nicho:'Corrida',seg:'63000',eng:'100',viz:'7700',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:5,feedback:''},
+  {nome:'Larissa Fabrine',handle:'@lahfabrini',nicho:'Corrida / Lifestyle',seg:'155000',eng:'3000',viz:'34150',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Correndo Com Raika',handle:'@correndocomraika',nicho:'Corrida (Pet)',seg:'237000',eng:'2500',viz:'73000',setor:'',cidade:'Brasil',status:'Pendente',stars:0,feedback:''},
+  {nome:'Cami Pires',handle:'@camipiresveg',nicho:'Vegano / Estilo de vida',seg:'50500',eng:'150',viz:'4000',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Nathalia França',handle:'@nathyfrancaa',nicho:'Corrida / Bem-estar',seg:'443000',eng:'5000',viz:'120000',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Los Porpetas',handle:'@losporpetas',nicho:'Humor / Gastronomia',seg:'364000',eng:'3000',viz:'93000',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Izabella Camargo',handle:'@camarguinha',nicho:'Saúde Mental / Lifestyle',seg:'123000',eng:'300',viz:'15100',setor:'',cidade:'São Paulo/SP',status:'Pendente',stars:0,feedback:''},
+  {nome:'Jessica Soares',handle:'@_jessica.ssoares_',nicho:'Corrida / Esporte',seg:'97100',eng:'500',viz:'13200',setor:'',cidade:'Brasil',status:'Pendente',stars:0,feedback:''},
+  {nome:'Raniele Oliveira',handle:'@ranieleoli',nicho:'Corrida / Lifestyle',seg:'203000',eng:'1800',viz:'40000',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Patrícia Pam & William',handle:'@patriciapamm',nicho:'Entretenimento / Casal',seg:'1300000',eng:'15000',viz:'303000',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Vandin',handle:'@enquantoissoemGoias',nicho:'Humor / Portal Goiano',seg:'877000',eng:'1000',viz:'57000',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Lucas Peixoto',handle:'@falooquequero',nicho:'Humor / Entretenimento',seg:'1800000',eng:'5000',viz:'145000',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Gabriel',handle:'@ehgoiania',nicho:'Humor / Entretenimento',seg:'235000',eng:'1500',viz:'18600',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Cláudio Silvério',handle:'@ctsilverio',nicho:'Jornalismo / Esporte',seg:'62000',eng:'400',viz:'5600',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'Diretor da Record',handle:'—',nicho:'Mídia / TV',seg:'',eng:'',viz:'',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
+  {nome:'',handle:'',nicho:'Corrida',seg:'',eng:'',viz:'',setor:'',cidade:'Goiânia/GO',status:'Pendente',stars:0,feedback:''}
 ];
 
 const COLS = [
@@ -247,7 +247,8 @@ const COLS = [
   {key:'engpct',    label:'% Eng.',         w:72,  sort:'engpct'},
   {key:'viz',       label:'Viz. média',     w:110, sort:'viz'},
   {key:'vizpct',    label:'Viz. ÷ Seg.',    w:82,  sort:'vizpct'},
-  {key:'loc',       label:'Setor/Cidade',   w:110},
+  {key:'setor',     label:'Setor',          w:110, sort:'setor'},
+  {key:'cidade',    label:'Cidade',         w:110, sort:'cidade'},
   {key:'endereco',  label:'Endereço',       w:155},
   {key:'dataEnvio', label:'Data de Envio',  w:130, sort:'dataEnvio'},
   {key:'status',    label:'Status',         w:122},
@@ -268,7 +269,7 @@ async function loadRows() {
       return data.map(r => ({
         nome: r.nome||'', handle: r.handle||'', contato: r.contato||'',
         nicho: r.nicho||'', seg: r.seg||'', eng: r.eng||'',
-        viz: r.viz||'', loc: r.loc||'', endereco: r.endereco||'',
+        viz: r.viz||'', setor: r.setor||'', cidade: r.cidade||r.loc||'', endereco: r.endereco||'',
         dataEnvio: r.data_envio||'', status: r.status||'Pendente',
         stars: r.stars||0, feedback: r.feedback||''
       }));
@@ -287,7 +288,7 @@ async function persist() {
     ordem: i,
     nome: r.nome||'', handle: r.handle||'', contato: r.contato||'',
     nicho: r.nicho||'', seg: r.seg||'', eng: r.eng||'', viz: r.viz||'',
-    loc: r.loc||'', endereco: r.endereco||'',
+    setor: r.setor||'', cidade: r.cidade||'', endereco: r.endereco||'',
     data_envio: r.dataEnvio||'', status: r.status||'Pendente',
     stars: +r.stars||0, feedback: r.feedback||''
   }));
@@ -352,7 +353,8 @@ function pullDOM() {
       rows[i].seg       = tr.querySelector('.f-seg')?.value       ?? '';
       rows[i].eng       = tr.querySelector('.f-eng')?.value       ?? '';
       rows[i].viz       = tr.querySelector('.f-viz')?.value       ?? '';
-      rows[i].loc       = tr.querySelector('.f-loc')?.value       ?? '';
+      rows[i].setor     = tr.querySelector('.f-setor')?.value     ?? '';
+      rows[i].cidade    = tr.querySelector('.f-cidade')?.value    ?? '';
       rows[i].endereco  = tr.querySelector('.f-endereco')?.value  ?? '';
       rows[i].dataEnvio = tr.querySelector('.f-dataenvio')?.value ?? '';
       rows[i].status    = tr.querySelector('.f-status')?.value    ?? '';
@@ -369,7 +371,8 @@ function pullDOM() {
       rows[i].seg       = card.querySelector('.cc-seg')?.value       ?? '';
       rows[i].eng       = card.querySelector('.cc-eng')?.value       ?? '';
       rows[i].viz       = card.querySelector('.cc-viz')?.value       ?? '';
-      rows[i].loc       = card.querySelector('.cc-loc')?.value       ?? '';
+      rows[i].setor     = card.querySelector('.cc-setor')?.value     ?? '';
+      rows[i].cidade    = card.querySelector('.cc-cidade')?.value    ?? '';
       rows[i].endereco  = card.querySelector('.cc-endereco')?.value  ?? '';
       rows[i].dataEnvio = card.querySelector('.cc-dataenvio')?.value ?? '';
       rows[i].status    = card.querySelector('.cc-status')?.value    ?? '';
@@ -538,7 +541,8 @@ function renderRow(r, i) {
     engpct:    `<td id="eng-${i}">${calcHTML(r.eng,r.seg,5,2)}</td>`,
     viz:       `<td><input class="campo f-viz${r.viz?' ok':''}" value="${esc(r.viz)}" placeholder="ex: 8000" oninput="field(${i},'viz',this.value);refreshCalcs(${i})"></td>`,
     vizpct:    `<td id="viz-${i}">${calcHTML(r.viz,r.seg,20,8)}</td>`,
-    loc:       `<td><input class="campo f-loc${r.loc?' ok':''}" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)"></td>`,
+    setor:     `<td><input class="campo f-setor${r.setor?' ok':''}" value="${esc(r.setor||'')}" placeholder="Setor Sul, Centro…" oninput="field(${i},'setor',this.value)"></td>`,
+    cidade:    `<td><input class="campo f-cidade${r.cidade?' ok':''}" value="${esc(r.cidade||'')}" placeholder="Goiânia/GO" oninput="field(${i},'cidade',this.value)"></td>`,
     endereco:  `<td><input class="campo f-endereco${r.endereco?' ok':''}" value="${esc(r.endereco||'')}" placeholder="Rua, nº, bairro…" oninput="field(${i},'endereco',this.value)"></td>`,
     dataEnvio: `<td><input class="campo f-dataenvio${r.dataEnvio?' ok':''}" type="date" value="${esc(r.dataEnvio||'')}" oninput="field(${i},'dataEnvio',this.value)" style="color-scheme:dark"></td>`,
     status:    `<td><select class="campo f-status" onchange="field(${i},'status',this.value);updateStats()">${statusOpts}</select></td>`,
@@ -570,7 +574,8 @@ function renderCard(r, i) {
     </div>
     <div class="card-mid">
       <div class="nicho-cell">${nichoFieldHTML(i,r,'cc-nicho')}</div>
-      <input class="campo cc-loc${r.loc?' ok':''}" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)">
+      <input class="campo cc-setor${r.setor?' ok':''}" value="${esc(r.setor||'')}" placeholder="Setor Sul, Centro…" oninput="field(${i},'setor',this.value)">
+      <input class="campo cc-cidade${r.cidade?' ok':''}" value="${esc(r.cidade||'')}" placeholder="Goiânia/GO" oninput="field(${i},'cidade',this.value)">
       <div style="display:flex;gap:4px;align-items:center;overflow:hidden">
         <input class="campo cc-contato${r.contato?' ok':''}" value="${esc(r.contato||'')}" placeholder="(62) 9xxxx-xxxx" oninput="field(${i},'contato',this.value)" style="font-size:12px">
         ${r.contato?`<button class="link-btn" onclick="openWhatsApp(${i})" title="Abrir WhatsApp">💬</button>`:''}
@@ -647,7 +652,7 @@ function setStar(i, val) {
 }
 
 function addRow() {
-  rows.push({nome:'',handle:'',contato:'',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',endereco:'',status:'Pendente',stars:0,dataEnvio:'',feedback:''});
+  rows.push({nome:'',handle:'',contato:'',nicho:'Corrida',seg:'',eng:'',viz:'',setor:'',cidade:'Goiânia/GO',endereco:'',status:'Pendente',stars:0,dataEnvio:'',feedback:''});
   renderAll();
   const isMobile = window.innerWidth <= 768;
   if (isMobile) {
@@ -686,6 +691,8 @@ function sortBy(col) {
     else if (col==='engpct') { va=sa?pN(a.eng)/sa:0; vb=sb?pN(b.eng)/sb:0; }
     else if (col==='vizpct')    { va=sa?pN(a.viz)/sa:0; vb=sb?pN(b.viz)/sb:0; }
     else if (col==='dataEnvio') { va=a.dataEnvio||''; vb=b.dataEnvio||''; return va<vb?-sortDir:va>vb?sortDir:0; }
+    else if (col==='setor')    { return (a.setor||'').localeCompare(b.setor||'','pt-BR')*sortDir; }
+    else if (col==='cidade')   { return (a.cidade||'').localeCompare(b.cidade||'','pt-BR')*sortDir; }
     return (va-vb)*sortDir;
   });
   renderAll();
@@ -739,12 +746,12 @@ function clearFilters() {
 // ── CSV ──────────────────────────────────────────────
 function exportCSV() {
   pullDOM();
-  const hdr = ['#','Nome','Handle','Contato','Nicho','Seg. Instagram','Eng. Médio','% Eng.','Viz. média','Viz. ÷ Seg.','Setor/Cidade','Endereço','Data de Envio','Status','Estrelas','Feedback'];
+  const hdr = ['#','Nome','Handle','Contato','Nicho','Seg. Instagram','Eng. Médio','% Eng.','Viz. média','Viz. ÷ Seg.','Setor','Cidade','Endereço','Data de Envio','Status','Estrelas','Feedback'];
   const body = rows.map((r,i) => {
     const s=pN(r.seg),e=pN(r.eng),v=pN(r.viz);
     const ep=s&&e?(e/s*100).toFixed(2)+'%':'';
     const vp=s&&v?(v/s*100).toFixed(2)+'%':'';
-    return [i+1,r.nome,r.handle,r.contato||'',r.nicho,r.seg,r.eng,ep,r.viz,vp,r.loc,r.endereco||'',r.dataEnvio||'',r.status,r.stars||0,r.feedback]
+    return [i+1,r.nome,r.handle,r.contato||'',r.nicho,r.seg,r.eng,ep,r.viz,vp,r.setor||'',r.cidade||'',r.endereco||'',r.dataEnvio||'',r.status,r.stars||0,r.feedback]
       .map(x=>`"${String(x).replace(/"/g,'""')}"`)
       .join(',');
   });
