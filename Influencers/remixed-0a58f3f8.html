@@ -43,7 +43,7 @@
   .smsg-ing{color:#fbbf24}
 
   .table-wrapper{overflow-x:auto;border-radius:12px;border:1px solid var(--claro)}
-  table{width:100%;border-collapse:collapse;min-width:1200px}
+  table{width:100%;border-collapse:collapse;table-layout:fixed}
   thead tr{background:var(--claro)}
   th{padding:11px 13px;text-align:left;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--texto);border-bottom:1px solid #333;white-space:nowrap}
   th.sort{cursor:pointer;user-select:none}
@@ -79,6 +79,19 @@
   .btn-del:hover{color:#f87171}
   .btn-nicho-back{background:none;border:1px solid #444;border-radius:5px;color:#888;cursor:pointer;padding:4px 8px;font-size:12px;white-space:nowrap;transition:color .2s,border-color .2s;font-family:'DM Sans',sans-serif}
   .btn-nicho-back:hover{color:var(--laranja);border-color:var(--laranja)}
+  .link-btn{background:none;border:1px solid #444;border-radius:5px;color:#888;cursor:pointer;padding:3px 7px;font-size:12px;text-decoration:none;transition:color .2s,border-color .2s;line-height:1.4;flex-shrink:0;font-family:'DM Sans',sans-serif}
+  .link-btn:hover{color:var(--laranja);border-color:var(--laranja)}
+  .link-btn.dis,.link-btn:disabled{opacity:.25;cursor:default;pointer-events:none}
+  th{position:relative}
+  .rh{position:absolute;right:0;top:0;bottom:0;width:5px;cursor:col-resize;z-index:2;border-radius:0 3px 3px 0}
+  .rh:hover,.rh.dragging{background:var(--laranja);opacity:.55}
+  .col-menu-wrap{position:relative}
+  .col-menu{position:absolute;top:calc(100% + 6px);left:0;background:#1e1e1e;border:1px solid #333;border-radius:10px;padding:12px 16px;z-index:300;min-width:190px;display:none;box-shadow:0 8px 24px rgba(0,0,0,.6)}
+  .col-menu.open{display:block}
+  .col-menu .cm-title{font-size:10px;color:var(--texto);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .col-menu label{display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;font-size:13px;color:var(--branco);white-space:nowrap;user-select:none}
+  .col-menu label:hover{color:var(--laranja)}
+  .col-menu input[type=checkbox]{accent-color:var(--laranja);width:14px;height:14px;cursor:pointer}
 
   .total-bar{background:linear-gradient(135deg,var(--medio),#252525);border:1px solid var(--claro);border-radius:10px;padding:18px 24px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
   .total-bar .lbl{font-size:11px;color:var(--texto);text-transform:uppercase;letter-spacing:1px}
@@ -163,28 +176,16 @@
   <button class="btn btn-add" onclick="addRow()">＋ Influenciador</button>
   <button class="btn btn-save" onclick="saveNow()">💾 Salvar agora</button>
   <button class="btn btn-csv" onclick="exportCSV()">⬇ Exportar CSV</button>
+  <div class="col-menu-wrap">
+    <button class="btn btn-csv" id="btn-cols" onclick="toggleColMenu()">☰ Colunas</button>
+    <div class="col-menu" id="col-menu"></div>
+  </div>
   <span id="smsg" class="smsg"></span>
 </div>
 
 <div class="table-wrapper">
-<table>
-  <thead><tr>
-    <th>#</th>
-    <th>Nome</th>
-    <th>@Handle</th>
-    <th>Nicho</th>
-    <th class="sort" data-col="seg" onclick="sortBy('seg')">Seg. Instagram<span class="si"></span></th>
-    <th class="sort" data-col="eng" onclick="sortBy('eng')">Eng. Médio<span class="si"></span></th>
-    <th class="sort" data-col="engpct" onclick="sortBy('engpct')">% Eng.<span class="si"></span></th>
-    <th class="sort" data-col="viz" onclick="sortBy('viz')">Viz. média/Reel<span class="si"></span></th>
-    <th class="sort" data-col="vizpct" onclick="sortBy('vizpct')">Viz. ÷ Seg.<span class="si"></span></th>
-    <th>Localização</th>
-    <th class="sort" data-col="dataEnvio" onclick="sortBy('dataEnvio')">Data de Envio<span class="si"></span></th>
-    <th>Status</th>
-    <th class="sort" data-col="stars" onclick="sortBy('stars')">⭐ Cesta<span class="si"></span></th>
-    <th>Feedback cesta</th>
-    <th></th>
-  </tr></thead>
+<table id="tbl">
+  <thead id="thead"></thead>
   <tbody id="tbody"></tbody>
 </table>
 </div>
@@ -235,6 +236,23 @@ const DEFAULTS = [
   {nome:'Diretor da Record',handle:'—',nicho:'Mídia / TV',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''},
   {nome:'',handle:'',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,feedback:''}
 ];
+
+const COLS = [
+  {key:'nome',      label:'Nome',           w:130},
+  {key:'handle',    label:'Perfil / Link',  w:160},
+  {key:'nicho',     label:'Nicho',          w:148},
+  {key:'seg',       label:'Seg. Instagram', w:115, sort:'seg'},
+  {key:'eng',       label:'Eng. Médio',     w:95,  sort:'eng'},
+  {key:'engpct',    label:'% Eng.',         w:72,  sort:'engpct'},
+  {key:'viz',       label:'Viz. média',     w:110, sort:'viz'},
+  {key:'vizpct',    label:'Viz. ÷ Seg.',    w:82,  sort:'vizpct'},
+  {key:'loc',       label:'Localização',    w:105},
+  {key:'dataEnvio', label:'Data de Envio',  w:130, sort:'dataEnvio'},
+  {key:'status',    label:'Status',         w:122},
+  {key:'stars',     label:'⭐ Cesta',        w:95,  sort:'stars'},
+  {key:'feedback',  label:'Feedback cesta', w:160},
+];
+let colVis = Object.fromEntries(COLS.map(c => [c.key, true]));
 
 let rows = [];
 let sortCol = null, sortDir = 1;
@@ -414,6 +432,66 @@ function backToNichoList(i) {
   scheduleSave();
 }
 
+// ── Columns & profile link ───────────────────────────
+function loadColVis() {
+  try { const s=localStorage.getItem('perboni_colvis'); if(s) Object.assign(colVis,JSON.parse(s)); } catch(e){}
+}
+function saveColVis() {
+  try { localStorage.setItem('perboni_colvis',JSON.stringify(colVis)); } catch(e){}
+}
+function renderColMenu() {
+  const menu = document.getElementById('col-menu');
+  if (!menu) return;
+  menu.innerHTML = '<div class="cm-title">Mostrar / ocultar colunas</div>' +
+    COLS.map(c=>`<label><input type="checkbox" ${colVis[c.key]?'checked':''} onchange="toggleCol('${c.key}',this.checked)"> ${c.label}</label>`).join('');
+}
+function toggleColMenu() {
+  const menu = document.getElementById('col-menu');
+  if (menu.classList.toggle('open')) renderColMenu();
+}
+function toggleCol(key, vis) {
+  const remaining = COLS.filter(c => (c.key===key ? vis : colVis[c.key])).length;
+  if (remaining < 1) return;
+  colVis[key] = vis;
+  saveColVis();
+  renderAll();
+  renderColMenu();
+}
+function openProfile(i) {
+  const val = (rows[i]?.handle||'').trim();
+  if (!val || val==='—') return;
+  const url = val.startsWith('http') ? val : `https://instagram.com/${val.replace(/^@/,'')}`;
+  window.open(url, '_blank', 'noopener');
+}
+function renderHeader() {
+  const hdrs = COLS.filter(c=>colVis[c.key]).map(c => {
+    const sortAttr = c.sort ? `class="sort" data-col="${c.sort}" onclick="sortBy('${c.sort}')"` : 'class=""';
+    const si = c.sort ? '<span class="si"></span>' : '';
+    return `<th ${sortAttr} style="width:${c.w}px">${c.label}${si}<span class="rh"></span></th>`;
+  }).join('');
+  document.getElementById('thead').innerHTML =
+    `<tr><th style="width:40px">#</th>${hdrs}<th style="width:40px"></th></tr>`;
+  document.querySelectorAll('#thead th.sort').forEach(th => {
+    th.classList.remove('sa','sd');
+    if (th.dataset.col===sortCol) th.classList.add(sortDir===1?'sa':'sd');
+  });
+}
+function initResizable() {
+  document.querySelectorAll('#thead th').forEach(th => {
+    const rh = th.querySelector('.rh');
+    if (!rh) return;
+    let sx, sw;
+    rh.addEventListener('mousedown', e => {
+      sx=e.pageX; sw=th.offsetWidth; rh.classList.add('dragging');
+      const onMove = e2 => { th.style.width=Math.max(50,sw+e2.pageX-sx)+'px'; };
+      const onUp   = ()  => { rh.classList.remove('dragging'); document.removeEventListener('mousemove',onMove); document.removeEventListener('mouseup',onUp); };
+      document.addEventListener('mousemove',onMove);
+      document.addEventListener('mouseup',onUp);
+      e.preventDefault(); e.stopPropagation();
+    });
+  });
+}
+
 // ── Stats ────────────────────────────────────────────
 function updateStats() {
   const conf    = rows.filter(r=>r.status==='Confirmado');
@@ -435,23 +513,25 @@ function updateStats() {
 // ── Render ───────────────────────────────────────────
 function renderRow(r, i) {
   const statusOpts = STATUS.map(s=>`<option value="${s}"${s===r.status?' selected':''}>${SICON[s]||''} ${s}</option>`).join('');
-  const starsHTML  = [1,2,3,4,5].map(v=>`<span class="star${v<=(+r.stars)?' on':''}" onclick="setStar(${i},${v})">★</span>`).join('');
-
+  const hasLink = r.handle && r.handle !== '—';
+  const cells = {
+    nome:      `<td><input class="campo f-nome${r.nome?' ok':''}" value="${esc(r.nome)}" placeholder="Nome" oninput="field(${i},'nome',this.value)"></td>`,
+    handle:    `<td><div style="display:flex;gap:4px;align-items:center;overflow:hidden"><input class="campo f-handle${r.handle?' ok':''}" value="${esc(r.handle)}" placeholder="@handle ou https://…" oninput="field(${i},'handle',this.value)"><button class="link-btn${hasLink?'':' dis'}" onclick="openProfile(${i})" title="Abrir perfil"${hasLink?'':' disabled'}>↗</button></div></td>`,
+    nicho:     `<td class="nicho-cell">${nichoFieldHTML(i,r,'f-nicho')}</td>`,
+    seg:       `<td><input class="campo f-seg${r.seg?' ok':''}" value="${esc(r.seg)}" placeholder="ex: 45200" oninput="field(${i},'seg',this.value);refreshCalcs(${i})"></td>`,
+    eng:       `<td><input class="campo f-eng${r.eng?' ok':''}" value="${esc(r.eng)}" placeholder="ex: 1800" oninput="field(${i},'eng',this.value);refreshCalcs(${i})"></td>`,
+    engpct:    `<td id="eng-${i}">${calcHTML(r.eng,r.seg,5,2)}</td>`,
+    viz:       `<td><input class="campo f-viz${r.viz?' ok':''}" value="${esc(r.viz)}" placeholder="ex: 8000" oninput="field(${i},'viz',this.value);refreshCalcs(${i})"></td>`,
+    vizpct:    `<td id="viz-${i}">${calcHTML(r.viz,r.seg,20,8)}</td>`,
+    loc:       `<td><input class="campo f-loc${r.loc?' ok':''}" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)"></td>`,
+    dataEnvio: `<td><input class="campo f-dataenvio${r.dataEnvio?' ok':''}" type="date" value="${esc(r.dataEnvio||'')}" oninput="field(${i},'dataEnvio',this.value)" style="color-scheme:dark"></td>`,
+    status:    `<td><select class="campo f-status" onchange="field(${i},'status',this.value);updateStats()">${statusOpts}</select></td>`,
+    stars:     `<td><div class="stars">${starsInner(i,+r.stars)}</div></td>`,
+    feedback:  `<td><textarea class="campo campo-fb f-fb" placeholder="Como foi a recepção?" oninput="field(${i},'feedback',this.value)">${esc(r.feedback)}</textarea></td>`,
+  };
   return `<tr data-idx="${i}">
     <td class="num">${String(i+1).padStart(2,'0')}</td>
-    <td><input class="campo f-nome${r.nome?' ok':''}" value="${esc(r.nome)}" placeholder="Nome" oninput="field(${i},'nome',this.value)"></td>
-    <td><input class="campo f-handle${r.handle?' ok':''}" value="${esc(r.handle)}" placeholder="@handle" oninput="field(${i},'handle',this.value)"></td>
-    <td class="nicho-cell">${nichoFieldHTML(i,r,'f-nicho')}</td>
-    <td><input class="campo f-seg${r.seg?' ok':''}" value="${esc(r.seg)}" placeholder="ex: 45200" oninput="field(${i},'seg',this.value);refreshCalcs(${i})"></td>
-    <td><input class="campo f-eng${r.eng?' ok':''}" value="${esc(r.eng)}" placeholder="ex: 1800" oninput="field(${i},'eng',this.value);refreshCalcs(${i})"></td>
-    <td id="eng-${i}">${calcHTML(r.eng,r.seg,5,2)}</td>
-    <td><input class="campo f-viz${r.viz?' ok':''}" value="${esc(r.viz)}" placeholder="ex: 8000" oninput="field(${i},'viz',this.value);refreshCalcs(${i})"></td>
-    <td id="viz-${i}">${calcHTML(r.viz,r.seg,20,8)}</td>
-    <td><input class="campo f-loc${r.loc?' ok':''}" style="min-width:88px" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)"></td>
-    <td><input class="campo f-dataenvio${r.dataEnvio?' ok':''}" type="date" value="${esc(r.dataEnvio||'')}" oninput="field(${i},'dataEnvio',this.value)" style="min-width:130px;color-scheme:dark"></td>
-    <td><select class="campo f-status" onchange="field(${i},'status',this.value);updateStats()">${statusOpts}</select></td>
-    <td><div class="stars">${starsHTML}</div></td>
-    <td><textarea class="campo campo-fb f-fb" placeholder="Como foi a recepção?" oninput="field(${i},'feedback',this.value)">${esc(r.feedback)}</textarea></td>
+    ${COLS.filter(c=>colVis[c.key]).map(c=>cells[c.key]||'').join('')}
     <td><button class="btn-del" onclick="removeRow(${i})" title="Remover">🗑</button></td>
   </tr>`;
 }
@@ -464,7 +544,10 @@ function renderCard(r, i) {
       <span class="card-num">${String(i+1).padStart(2,'0')}</span>
       <div class="card-identity">
         <input class="campo cc-nome${r.nome?' ok':''}" value="${esc(r.nome)}" placeholder="Nome" oninput="field(${i},'nome',this.value)">
-        <input class="campo cc-handle${r.handle?' ok':''}" value="${esc(r.handle)}" placeholder="@handle" style="font-size:12px;color:var(--texto)" oninput="field(${i},'handle',this.value)">
+        <div style="display:flex;gap:4px;align-items:center">
+          <input class="campo cc-handle${r.handle?' ok':''}" value="${esc(r.handle)}" placeholder="@handle ou https://…" style="font-size:12px;color:var(--texto)" oninput="field(${i},'handle',this.value)">
+          ${r.handle && r.handle!=='—'?`<button class="link-btn" onclick="openProfile(${i})" title="Abrir perfil">↗</button>`:''}
+        </div>
       </div>
       <select class="campo cc-status" style="max-width:130px" onchange="field(${i},'status',this.value);updateStats()">${statusOpts}</select>
       <button class="btn-del" onclick="removeRow(${i})" title="Remover">🗑</button>
@@ -489,16 +572,13 @@ function renderCard(r, i) {
 }
 
 function renderAll() {
+  renderHeader();
+  initResizable();
   document.getElementById('tbody').innerHTML = rows.map(renderRow).join('');
   document.getElementById('cards-container').innerHTML = rows.map(renderCard).join('');
   updateStats();
   populateNichoFilter();
   applyFilters();
-  // restore sort headers
-  document.querySelectorAll('th.sort').forEach(th => {
-    th.classList.remove('sa','sd');
-    if (th.dataset.col === sortCol) th.classList.add(sortDir===1?'sa':'sd');
-  });
 }
 
 // ── Field update ─────────────────────────────────────
@@ -685,9 +765,17 @@ function copiarCSV() {
 
 // ── Init ─────────────────────────────────────────────
 (async () => {
+  loadColVis();
   rows = await loadRows();
   renderAll();
   document.getElementById('loading').style.display = 'none';
+
+  // Close column menu when clicking outside
+  document.addEventListener('click', e => {
+    const menu = document.getElementById('col-menu');
+    if (menu && !menu.contains(e.target) && !e.target.closest('#btn-cols'))
+      menu.classList.remove('open');
+  });
 
   // Re-render when switching between mobile and desktop so both views stay in sync
   let prevMobile = window.innerWidth <= 768;
