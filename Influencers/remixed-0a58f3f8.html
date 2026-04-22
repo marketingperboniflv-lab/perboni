@@ -240,13 +240,15 @@ const DEFAULTS = [
 const COLS = [
   {key:'nome',      label:'Nome',           w:130},
   {key:'handle',    label:'Perfil / Link',  w:160},
+  {key:'contato',   label:'Contato',        w:145},
   {key:'nicho',     label:'Nicho',          w:148},
   {key:'seg',       label:'Seg. Instagram', w:115, sort:'seg'},
   {key:'eng',       label:'Eng. Médio',     w:95,  sort:'eng'},
   {key:'engpct',    label:'% Eng.',         w:72,  sort:'engpct'},
   {key:'viz',       label:'Viz. média',     w:110, sort:'viz'},
   {key:'vizpct',    label:'Viz. ÷ Seg.',    w:82,  sort:'vizpct'},
-  {key:'loc',       label:'Localização',    w:105},
+  {key:'loc',       label:'Setor/Cidade',   w:110},
+  {key:'endereco',  label:'Endereço',       w:155},
   {key:'dataEnvio', label:'Data de Envio',  w:130, sort:'dataEnvio'},
   {key:'status',    label:'Status',         w:122},
   {key:'stars',     label:'⭐ Cesta',        w:95,  sort:'stars'},
@@ -264,10 +266,11 @@ async function loadRows() {
     const { data, error } = await sb.from('influencers').select('*').order('ordem');
     if (!error && data && data.length) {
       return data.map(r => ({
-        nome: r.nome, handle: r.handle, nicho: r.nicho,
-        seg: r.seg, eng: r.eng, viz: r.viz, loc: r.loc,
-        dataEnvio: r.data_envio, status: r.status,
-        stars: r.stars, feedback: r.feedback
+        nome: r.nome||'', handle: r.handle||'', contato: r.contato||'',
+        nicho: r.nicho||'', seg: r.seg||'', eng: r.eng||'',
+        viz: r.viz||'', loc: r.loc||'', endereco: r.endereco||'',
+        dataEnvio: r.data_envio||'', status: r.status||'Pendente',
+        stars: r.stars||0, feedback: r.feedback||''
       }));
     }
   } catch(e) {}
@@ -276,14 +279,15 @@ async function loadRows() {
     const s = localStorage.getItem(KEY);
     if (s) { const p = JSON.parse(s); if (Array.isArray(p) && p.length) return p; }
   } catch(e) {}
-  return DEFAULTS.map(r => ({...r}));
+  return DEFAULTS.map(r => ({endereco:'', contato:'', ...r}));
 }
 
 async function persist() {
   const payload = rows.map((r, i) => ({
     ordem: i,
-    nome: r.nome||'', handle: r.handle||'', nicho: r.nicho||'',
-    seg: r.seg||'', eng: r.eng||'', viz: r.viz||'', loc: r.loc||'',
+    nome: r.nome||'', handle: r.handle||'', contato: r.contato||'',
+    nicho: r.nicho||'', seg: r.seg||'', eng: r.eng||'', viz: r.viz||'',
+    loc: r.loc||'', endereco: r.endereco||'',
     data_envio: r.dataEnvio||'', status: r.status||'Pendente',
     stars: +r.stars||0, feedback: r.feedback||''
   }));
@@ -343,11 +347,13 @@ function pullDOM() {
       if (!rows[i]) return;
       rows[i].nome      = tr.querySelector('.f-nome')?.value      ?? '';
       rows[i].handle    = tr.querySelector('.f-handle')?.value    ?? '';
+      rows[i].contato   = tr.querySelector('.f-contato')?.value   ?? '';
       rows[i].nicho     = tr.querySelector('.f-nicho')?.value     ?? '';
       rows[i].seg       = tr.querySelector('.f-seg')?.value       ?? '';
       rows[i].eng       = tr.querySelector('.f-eng')?.value       ?? '';
       rows[i].viz       = tr.querySelector('.f-viz')?.value       ?? '';
       rows[i].loc       = tr.querySelector('.f-loc')?.value       ?? '';
+      rows[i].endereco  = tr.querySelector('.f-endereco')?.value  ?? '';
       rows[i].dataEnvio = tr.querySelector('.f-dataenvio')?.value ?? '';
       rows[i].status    = tr.querySelector('.f-status')?.value    ?? '';
       rows[i].feedback  = tr.querySelector('.f-fb')?.value        ?? '';
@@ -358,11 +364,13 @@ function pullDOM() {
       if (!rows[i]) return;
       rows[i].nome      = card.querySelector('.cc-nome')?.value      ?? '';
       rows[i].handle    = card.querySelector('.cc-handle')?.value    ?? '';
+      rows[i].contato   = card.querySelector('.cc-contato')?.value   ?? '';
       rows[i].nicho     = card.querySelector('.cc-nicho')?.value     ?? '';
       rows[i].seg       = card.querySelector('.cc-seg')?.value       ?? '';
       rows[i].eng       = card.querySelector('.cc-eng')?.value       ?? '';
       rows[i].viz       = card.querySelector('.cc-viz')?.value       ?? '';
       rows[i].loc       = card.querySelector('.cc-loc')?.value       ?? '';
+      rows[i].endereco  = card.querySelector('.cc-endereco')?.value  ?? '';
       rows[i].dataEnvio = card.querySelector('.cc-dataenvio')?.value ?? '';
       rows[i].status    = card.querySelector('.cc-status')?.value    ?? '';
       rows[i].feedback  = card.querySelector('.cc-fb')?.value        ?? '';
@@ -463,6 +471,12 @@ function openProfile(i) {
   const url = val.startsWith('http') ? val : `https://instagram.com/${val.replace(/^@/,'')}`;
   window.open(url, '_blank', 'noopener');
 }
+function openWhatsApp(i) {
+  const val = (rows[i]?.contato||'').replace(/\D/g,'');
+  if (!val) return;
+  const num = val.startsWith('55') ? val : '55' + val;
+  window.open(`https://wa.me/${num}`, '_blank', 'noopener');
+}
 function renderHeader() {
   const hdrs = COLS.filter(c=>colVis[c.key]).map(c => {
     const sortAttr = c.sort ? `class="sort" data-col="${c.sort}" onclick="sortBy('${c.sort}')"` : 'class=""';
@@ -517,6 +531,7 @@ function renderRow(r, i) {
   const cells = {
     nome:      `<td><input class="campo f-nome${r.nome?' ok':''}" value="${esc(r.nome)}" placeholder="Nome" oninput="field(${i},'nome',this.value)"></td>`,
     handle:    `<td><div style="display:flex;gap:4px;align-items:center;overflow:hidden"><input class="campo f-handle${r.handle?' ok':''}" value="${esc(r.handle)}" placeholder="@handle ou https://…" oninput="field(${i},'handle',this.value)"><button class="link-btn${hasLink?'':' dis'}" onclick="openProfile(${i})" title="Abrir perfil"${hasLink?'':' disabled'}>↗</button></div></td>`,
+    contato:   `<td><div style="display:flex;gap:4px;align-items:center;overflow:hidden"><input class="campo f-contato${r.contato?' ok':''}" value="${esc(r.contato)}" placeholder="(62) 9xxxx-xxxx" oninput="field(${i},'contato',this.value)"><button class="link-btn${r.contato?'':' dis'}" onclick="openWhatsApp(${i})" title="Abrir WhatsApp"${r.contato?'':' disabled'}>💬</button></div></td>`,
     nicho:     `<td class="nicho-cell">${nichoFieldHTML(i,r,'f-nicho')}</td>`,
     seg:       `<td><input class="campo f-seg${r.seg?' ok':''}" value="${esc(r.seg)}" placeholder="ex: 45200" oninput="field(${i},'seg',this.value);refreshCalcs(${i})"></td>`,
     eng:       `<td><input class="campo f-eng${r.eng?' ok':''}" value="${esc(r.eng)}" placeholder="ex: 1800" oninput="field(${i},'eng',this.value);refreshCalcs(${i})"></td>`,
@@ -524,6 +539,7 @@ function renderRow(r, i) {
     viz:       `<td><input class="campo f-viz${r.viz?' ok':''}" value="${esc(r.viz)}" placeholder="ex: 8000" oninput="field(${i},'viz',this.value);refreshCalcs(${i})"></td>`,
     vizpct:    `<td id="viz-${i}">${calcHTML(r.viz,r.seg,20,8)}</td>`,
     loc:       `<td><input class="campo f-loc${r.loc?' ok':''}" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)"></td>`,
+    endereco:  `<td><input class="campo f-endereco${r.endereco?' ok':''}" value="${esc(r.endereco||'')}" placeholder="Rua, nº, bairro…" oninput="field(${i},'endereco',this.value)"></td>`,
     dataEnvio: `<td><input class="campo f-dataenvio${r.dataEnvio?' ok':''}" type="date" value="${esc(r.dataEnvio||'')}" oninput="field(${i},'dataEnvio',this.value)" style="color-scheme:dark"></td>`,
     status:    `<td><select class="campo f-status" onchange="field(${i},'status',this.value);updateStats()">${statusOpts}</select></td>`,
     stars:     `<td><div class="stars">${starsInner(i,+r.stars)}</div></td>`,
@@ -555,6 +571,11 @@ function renderCard(r, i) {
     <div class="card-mid">
       <div class="nicho-cell">${nichoFieldHTML(i,r,'cc-nicho')}</div>
       <input class="campo cc-loc${r.loc?' ok':''}" value="${esc(r.loc)}" placeholder="Cidade/UF" oninput="field(${i},'loc',this.value)">
+      <div style="display:flex;gap:4px;align-items:center;overflow:hidden">
+        <input class="campo cc-contato${r.contato?' ok':''}" value="${esc(r.contato||'')}" placeholder="(62) 9xxxx-xxxx" oninput="field(${i},'contato',this.value)" style="font-size:12px">
+        ${r.contato?`<button class="link-btn" onclick="openWhatsApp(${i})" title="Abrir WhatsApp">💬</button>`:''}
+      </div>
+      <input class="campo cc-endereco${r.endereco?' ok':''}" value="${esc(r.endereco||'')}" placeholder="Rua, nº, bairro…" oninput="field(${i},'endereco',this.value)" style="font-size:12px">
     </div>
     <div class="card-metrics">
       <div class="cm"><span class="cm-lbl">Seguidores</span><input class="campo cc-seg${r.seg?' ok':''}" value="${esc(r.seg)}" placeholder="45000" oninput="field(${i},'seg',this.value);refreshCalcs(${i})"></div>
@@ -626,7 +647,7 @@ function setStar(i, val) {
 }
 
 function addRow() {
-  rows.push({nome:'',handle:'',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',status:'Pendente',stars:0,dataEnvio:'',feedback:''});
+  rows.push({nome:'',handle:'',contato:'',nicho:'Corrida',seg:'',eng:'',viz:'',loc:'Goiânia/GO',endereco:'',status:'Pendente',stars:0,dataEnvio:'',feedback:''});
   renderAll();
   const isMobile = window.innerWidth <= 768;
   if (isMobile) {
@@ -718,12 +739,12 @@ function clearFilters() {
 // ── CSV ──────────────────────────────────────────────
 function exportCSV() {
   pullDOM();
-  const hdr = ['#','Nome','Handle','Nicho','Seg. Instagram','Eng. Médio','% Eng.','Viz. média','Viz. ÷ Seg.','Localização','Data de Envio','Status','Estrelas','Feedback'];
+  const hdr = ['#','Nome','Handle','Contato','Nicho','Seg. Instagram','Eng. Médio','% Eng.','Viz. média','Viz. ÷ Seg.','Setor/Cidade','Endereço','Data de Envio','Status','Estrelas','Feedback'];
   const body = rows.map((r,i) => {
     const s=pN(r.seg),e=pN(r.eng),v=pN(r.viz);
     const ep=s&&e?(e/s*100).toFixed(2)+'%':'';
     const vp=s&&v?(v/s*100).toFixed(2)+'%':'';
-    return [i+1,r.nome,r.handle,r.nicho,r.seg,r.eng,ep,r.viz,vp,r.loc,r.dataEnvio||'',r.status,r.stars||0,r.feedback]
+    return [i+1,r.nome,r.handle,r.contato||'',r.nicho,r.seg,r.eng,ep,r.viz,vp,r.loc,r.endereco||'',r.dataEnvio||'',r.status,r.stars||0,r.feedback]
       .map(x=>`"${String(x).replace(/"/g,'""')}"`)
       .join(',');
   });
