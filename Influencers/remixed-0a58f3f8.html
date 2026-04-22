@@ -270,16 +270,23 @@ async function persist() {
     stars: +r.stars||0, feedback: r.feedback||''
   }));
   try {
-    await sb.from('influencers').delete().gte('ordem', 0);
-    const { error } = await sb.from('influencers').insert(payload);
-    if (!error) {
-      try { localStorage.setItem(KEY, JSON.stringify(rows)); } catch(e) {}
-      return true;
-    }
-  } catch(e) {}
-  // Fallback: localStorage only
-  try { localStorage.setItem(KEY, JSON.stringify(rows)); return true; } catch(e) {}
-  return false;
+    const { error: delErr } = await sb.from('influencers').delete().gte('ordem', 0);
+    if (delErr) throw delErr;
+    const { error: insErr } = await sb.from('influencers').insert(payload);
+    if (insErr) throw insErr;
+    try { localStorage.setItem(KEY, JSON.stringify(rows)); } catch(e) {}
+    return 'cloud';
+  } catch(e) {
+    console.error('Supabase save error:', e?.message || e);
+    try { localStorage.setItem(KEY, JSON.stringify(rows)); return 'local'; } catch(le) {}
+    return false;
+  }
+}
+
+function persistMsg(result, auto) {
+  if (result === 'cloud') return [auto ? '☁ Salvo na nuvem' : '☁ Salvo na nuvem!', 'smsg-ok'];
+  if (result === 'local') return ['⚠ Nuvem indisponível — salvo só localmente', 'smsg-err'];
+  return ['⚠ Erro ao salvar', 'smsg-err'];
 }
 
 function scheduleSave() {
@@ -287,9 +294,10 @@ function scheduleSave() {
   setMsg('💾 Salvando…','smsg-ing');
   saveTimer = setTimeout(async () => {
     pullDOM();
-    const ok = await persist();
-    setMsg(ok ? '✓ Salvo automaticamente' : '⚠ Erro ao salvar', ok ? 'smsg-ok':'smsg-err');
-    setTimeout(()=>setMsg('',''), 3000);
+    const result = await persist();
+    const [msg, cls] = persistMsg(result, true);
+    setMsg(msg, cls);
+    setTimeout(()=>setMsg('',''), 4000);
   }, 900);
 }
 
@@ -297,9 +305,10 @@ async function saveNow() {
   clearTimeout(saveTimer);
   pullDOM();
   setMsg('💾 Salvando…','smsg-ing');
-  const ok = await persist();
-  setMsg(ok ? '✓ Salvo!' : '⚠ Erro ao salvar', ok ? 'smsg-ok':'smsg-err');
-  setTimeout(()=>setMsg('',''), 3000);
+  const result = await persist();
+  const [msg, cls] = persistMsg(result, false);
+  setMsg(msg, cls);
+  setTimeout(()=>setMsg('',''), 4000);
 }
 
 function setMsg(txt, cls) {
