@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Influenciadores Perboni</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
   :root{--verde:#1DB954;--laranja:#FF6B2B;--escuro:#111;--medio:#1E1E1E;--claro:#2A2A2A;--texto:#888;--branco:#F5F5F5}
@@ -205,6 +206,10 @@
 
 <script>
 const KEY = 'perboni_foodrun_v3';
+const sb = supabase.createClient(
+  'https://fmgajryvxzfkrscwelss.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtZ2Fqcnl2eHpma3JzY3dlbHNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4NTUwNjQsImV4cCI6MjA5MjQzMTA2NH0.oTMHVtRj7CBU75BzIpj0hE-VhV8xYMPl-DbNZYOkyK4'
+);
 
 const NICHOS = ['Corrida','Fitness / Corrida','Corrida (Pet)','Corrida / Lifestyle','Corrida / Bem-estar','Corrida / Esporte','Saúde Mental / Lifestyle','Humor / Gastronomia','Humor / Entretenimento','Humor / Portal Goiano','Gastronomia / Goiânia','Entretenimento / Casal','Vegano / Estilo de vida','Jornalismo / Esporte','Mídia / TV','Outro'];
 const STATUS = ['Pendente','Confirmado','Negociando','Declinado'];
@@ -238,28 +243,43 @@ let saveTimer = null;
 // ── Storage ──────────────────────────────────────────
 async function loadRows() {
   try {
-    const res = await window.storage.get(KEY);
-    if (res && res.value) {
-      const p = JSON.parse(res.value);
-      if (Array.isArray(p) && p.length) return p;
+    const { data, error } = await sb.from('influencers').select('*').order('ordem');
+    if (!error && data && data.length) {
+      return data.map(r => ({
+        nome: r.nome, handle: r.handle, nicho: r.nicho,
+        seg: r.seg, eng: r.eng, viz: r.viz, loc: r.loc,
+        dataEnvio: r.data_envio, status: r.status,
+        stars: r.stars, feedback: r.feedback
+      }));
     }
   } catch(e) {}
+  // Fallback: localStorage
   try {
     const s = localStorage.getItem(KEY);
-    if (s) {
-      const p = JSON.parse(s);
-      if (Array.isArray(p) && p.length) return p;
-    }
+    if (s) { const p = JSON.parse(s); if (Array.isArray(p) && p.length) return p; }
   } catch(e) {}
   return DEFAULTS.map(r => ({...r}));
 }
 
 async function persist() {
-  const json = JSON.stringify(rows);
-  let ok = false;
-  try { const r = await window.storage.set(KEY, json); if(r) ok=true; } catch(e) {}
-  try { localStorage.setItem(KEY, json); ok=true; } catch(e) {}
-  return ok;
+  const payload = rows.map((r, i) => ({
+    ordem: i,
+    nome: r.nome||'', handle: r.handle||'', nicho: r.nicho||'',
+    seg: r.seg||'', eng: r.eng||'', viz: r.viz||'', loc: r.loc||'',
+    data_envio: r.dataEnvio||'', status: r.status||'Pendente',
+    stars: +r.stars||0, feedback: r.feedback||''
+  }));
+  try {
+    await sb.from('influencers').delete().gte('ordem', 0);
+    const { error } = await sb.from('influencers').insert(payload);
+    if (!error) {
+      try { localStorage.setItem(KEY, JSON.stringify(rows)); } catch(e) {}
+      return true;
+    }
+  } catch(e) {}
+  // Fallback: localStorage only
+  try { localStorage.setItem(KEY, JSON.stringify(rows)); return true; } catch(e) {}
+  return false;
 }
 
 function scheduleSave() {
