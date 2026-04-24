@@ -473,11 +473,15 @@ function backToNichoList(i) {
 }
 
 // ── Columns & profile link ───────────────────────────
-function loadColVis() {
-  try { const s=localStorage.getItem('perboni_colvis'); if(s) Object.assign(colVis,JSON.parse(s)); } catch(e){}
+async function loadColVis() {
+  try {
+    const { data } = await sb.from('settings').select('value').eq('key','colvis').single();
+    if (data?.value) Object.assign(colVis, JSON.parse(data.value));
+  } catch(e) {}
 }
 function saveColVis() {
-  try { localStorage.setItem('perboni_colvis',JSON.stringify(colVis)); } catch(e){}
+  sb.from('settings').upsert({key:'colvis', value:JSON.stringify(colVis)})
+    .then(({error}) => { if (error) console.warn('colVis save error:', error.message); });
 }
 function renderColMenu() {
   const menu = document.getElementById('col-menu');
@@ -822,7 +826,7 @@ function copiarCSV() {
 
 // ── Init ─────────────────────────────────────────────
 (async () => {
-  loadColVis();
+  await loadColVis();
   rows = await loadRows();
   renderAll();
   updateSyncBadge();
