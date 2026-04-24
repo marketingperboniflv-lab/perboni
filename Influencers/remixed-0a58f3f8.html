@@ -85,6 +85,10 @@
   th{position:relative}
   .rh{position:absolute;right:0;top:0;bottom:0;width:5px;cursor:col-resize;z-index:2;border-radius:0 3px 3px 0}
   .rh:hover,.rh.dragging{background:var(--laranja);opacity:.55}
+  .sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border-radius:20px;white-space:nowrap;font-weight:600}
+  .sync-cloud{background:rgba(29,185,84,.15);color:#1DB954;border:1px solid rgba(29,185,84,.3)}
+  .sync-local{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+  .sync-error{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.3)}
   .col-menu-wrap{position:relative}
   .col-menu{position:absolute;top:calc(100% + 6px);left:0;background:#1e1e1e;border:1px solid #333;border-radius:10px;padding:12px 16px;z-index:300;min-width:190px;display:none;box-shadow:0 8px 24px rgba(0,0,0,.6)}
   .col-menu.open{display:block}
@@ -181,6 +185,7 @@
     <div class="col-menu" id="col-menu"></div>
   </div>
   <span id="smsg" class="smsg"></span>
+  <span id="sync-badge" class="sync-badge"></span>
 </div>
 
 <div class="table-wrapper">
@@ -206,7 +211,7 @@
 </div>
 
 <script>
-const KEY = 'perboni_foodrun_v3';
+let dataSource = 'loading'; // 'cloud' | 'cloud-empty' | 'error'
 const sb = supabase.createClient(
   'https://fmgajryvxzfkrscwelss.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZtZ2Fqcnl2eHpma3JzY3dlbHNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4NTUwNjQsImV4cCI6MjA5MjQzMTA2NH0.oTMHVtRj7CBU75BzIpj0hE-VhV8xYMPl-DbNZYOkyK4'
@@ -262,25 +267,43 @@ let sortCol = null, sortDir = 1;
 let saveTimer = null;
 
 // ── Storage ──────────────────────────────────────────
+function mapRow(r) {
+  return {
+    nome: r.nome||'', handle: r.handle||'', contato: r.contato||'',
+    nicho: r.nicho||'', seg: r.seg||'', eng: r.eng||'',
+    viz: r.viz||'', setor: r.setor||'', cidade: r.cidade||r.loc||'',
+    endereco: r.endereco||'', dataEnvio: r.data_envio||'',
+    status: r.status||'Pendente', stars: r.stars||0, feedback: r.feedback||''
+  };
+}
+
+function updateSyncBadge() {
+  const el = document.getElementById('sync-badge');
+  if (!el) return;
+  if (dataSource === 'cloud') {
+    el.className = 'sync-badge sync-cloud'; el.textContent = '☁ Dados da nuvem';
+  } else if (dataSource === 'cloud-empty') {
+    el.className = 'sync-badge sync-cloud'; el.textContent = '☁ Nuvem (sem dados ainda)';
+  } else {
+    el.className = 'sync-badge sync-error'; el.textContent = '⚠ Falha ao conectar na nuvem';
+  }
+}
+
 async function loadRows() {
   try {
     const { data, error } = await sb.from('influencers').select('*').order('ordem');
-    if (!error && data && data.length) {
-      return data.map(r => ({
-        nome: r.nome||'', handle: r.handle||'', contato: r.contato||'',
-        nicho: r.nicho||'', seg: r.seg||'', eng: r.eng||'',
-        viz: r.viz||'', setor: r.setor||'', cidade: r.cidade||r.loc||'', endereco: r.endereco||'',
-        dataEnvio: r.data_envio||'', status: r.status||'Pendente',
-        stars: r.stars||0, feedback: r.feedback||''
-      }));
+    if (error) throw error;
+    if (data && data.length) {
+      dataSource = 'cloud';
+      return data.map(mapRow);
     }
-  } catch(e) {}
-  // Fallback: localStorage
-  try {
-    const s = localStorage.getItem(KEY);
-    if (s) { const p = JSON.parse(s); if (Array.isArray(p) && p.length) return p; }
-  } catch(e) {}
-  return DEFAULTS.map(r => ({endereco:'', contato:'', ...r}));
+    dataSource = 'cloud-empty';
+    return DEFAULTS.map(r => ({endereco:'', contato:'', ...r}));
+  } catch(e) {
+    console.error('Supabase load error:', e?.message || e);
+    dataSource = 'error';
+    return DEFAULTS.map(r => ({endereco:'', contato:'', ...r}));
+  }
 }
 
 async function persist() {
@@ -293,23 +316,29 @@ async function persist() {
     stars: +r.stars||0, feedback: r.feedback||''
   }));
   try {
-    const { error: delErr } = await sb.from('influencers').delete().gte('ordem', 0);
-    if (delErr) throw delErr;
+    // Fetch existing IDs BEFORE inserting (so we can delete them after)
+    const { data: existing, error: selErr } = await sb.from('influencers').select('id');
+    if (selErr) throw selErr;
+    const oldIds = (existing || []).map(r => r.id);
+    // INSERT new rows first — data is safe until this succeeds
     const { error: insErr } = await sb.from('influencers').insert(payload);
     if (insErr) throw insErr;
-    try { localStorage.setItem(KEY, JSON.stringify(rows)); } catch(e) {}
+    // Only delete old rows after successful insert
+    if (oldIds.length > 0) {
+      await sb.from('influencers').delete().in('id', oldIds);
+    }
+    dataSource = 'cloud';
+    updateSyncBadge();
     return 'cloud';
   } catch(e) {
     console.error('Supabase save error:', e?.message || e);
-    try { localStorage.setItem(KEY, JSON.stringify(rows)); return 'local'; } catch(le) {}
     return false;
   }
 }
 
-function persistMsg(result, auto) {
-  if (result === 'cloud') return [auto ? '☁ Salvo na nuvem' : '☁ Salvo na nuvem!', 'smsg-ok'];
-  if (result === 'local') return ['⚠ Nuvem indisponível — salvo só localmente', 'smsg-err'];
-  return ['⚠ Erro ao salvar', 'smsg-err'];
+function persistMsg(result) {
+  if (result === 'cloud') return ['☁ Salvo na nuvem!', 'smsg-ok'];
+  return ['✗ Erro ao salvar na nuvem — verifique a conexão', 'smsg-err'];
 }
 
 function scheduleSave() {
@@ -318,9 +347,9 @@ function scheduleSave() {
   saveTimer = setTimeout(async () => {
     pullDOM();
     const result = await persist();
-    const [msg, cls] = persistMsg(result, true);
+    const [msg, cls] = persistMsg(result);
     setMsg(msg, cls);
-    setTimeout(()=>setMsg('',''), 4000);
+    setTimeout(()=>setMsg('',''), 5000);
   }, 900);
 }
 
@@ -329,9 +358,9 @@ async function saveNow() {
   pullDOM();
   setMsg('💾 Salvando…','smsg-ing');
   const result = await persist();
-  const [msg, cls] = persistMsg(result, false);
+  const [msg, cls] = persistMsg(result);
   setMsg(msg, cls);
-  setTimeout(()=>setMsg('',''), 4000);
+  setTimeout(()=>setMsg('',''), 5000);
 }
 
 function setMsg(txt, cls) {
@@ -796,6 +825,7 @@ function copiarCSV() {
   loadColVis();
   rows = await loadRows();
   renderAll();
+  updateSyncBadge();
   document.getElementById('loading').style.display = 'none';
 
   // Close column menu when clicking outside
